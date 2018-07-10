@@ -6,6 +6,7 @@ const Oauth = () => import('pages/oauth/oauth')
 const Overview = () => import('pages/overview/overview')
 const Ranking = () => import('pages/ranking/ranking')
 const AI = () => import('pages/ai-analyse/ai-analyse')
+const CustomerList = () => import('pages/customer-list/customer-list')
 
 Vue.use(Router)
 
@@ -32,7 +33,16 @@ const route = new Router({
       component: Ranking,
       meta: {
         title: '排行榜'
-      }
+      },
+      children: [
+        {
+          path: 'customer-list',
+          component: CustomerList,
+          meta: {
+            title: '客户'
+          }
+        }
+      ]
     },
     {
       path: '/ai-analyse',

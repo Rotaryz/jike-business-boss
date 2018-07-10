@@ -1,5 +1,8 @@
 <template>
-    <article class="ranking">排行榜</article>
+  <article class="ranking">
+    <router-link to="/ranking/customer-list">客户列表</router-link>
+    <router-view @refresh="refresh"></router-view>
+  </article>
 </template>
 
 <script type="text/ecmascript-6">
@@ -10,6 +13,13 @@
     },
     created() {
       this.$emit('tabChange', 2)
+    },
+    methods: {
+      refresh() {
+        setTimeout(() => {
+          console.info('rank refresh')
+        }, 300)
+      }
     }
   }
 </script>
