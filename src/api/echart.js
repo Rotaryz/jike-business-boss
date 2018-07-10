@@ -71,7 +71,7 @@ export default {
    * @returns {*}
    */
   getEmployee(customer_id = 0, merchant_id = 0, emloyee_id = 0) {
-    let url = 'api/employee/interactive-chart'
+    let url = 'api/employee/capacity-model-chart'
     let data = {
       customer_id,
       merchant_id,
