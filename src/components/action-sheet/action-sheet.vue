@@ -7,13 +7,13 @@
           <ul class="content-box">
             <li class="content-item"
                 :key="index"
-                v-for="(item,index) in dataArray"
-                v-if="dataArray.length"
+                v-if="dataArray.data && dataArray.data.length"
+                v-for="(item,index) in dataArray.data"
                 @click="change(index)"
             >
               <div class="item-box">
-                <div class="left">{{item.name}}</div>
-                <div class="right" v-if="item.isCheck"></div>
+                <div class="left">{{item}}</div>
+                <div class="right" v-if="dataArray.idx === index"></div>
               </div>
             </li>
           </ul>
@@ -29,16 +29,13 @@
   export default {
     props: {
       dataArray: {
-        type: Array,
-        default: []
+        type: Object
       }
     },
     data() {
       return {
         isShow: false
       }
-    },
-    beforeMount() {
     },
     methods: {
       show() {
@@ -48,20 +45,9 @@
         this.isShow = false
       },
       change(index) {
-        this.dataArray.map((item) => {
-          item.isCheck = false
-        })
-        this.dataArray[index].isCheck = true
+        this.dataArray.idx = index
         this.isShow = false
         this.$emit('changeGroup')
-      }
-    },
-    computed: {
-      isCheckId() {
-        this.preId = this.dataArray.some((item, index) => {
-          return item.isCheck ? index : -1
-        })
-        console.log(this.preId)
       }
     }
   }

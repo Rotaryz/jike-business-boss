@@ -8,6 +8,8 @@
         <scroll ref="scroll"
                 bcColor="#fff"
                 :data="dataArray"
+                :pullUpLoad="pullUpLoadObj"
+                @pullingUp="onPullingUp"
         >
           <div class="user-card-box" v-for="(item,index) in dataArray" :key="index">
             <user-card :cardInfo="item" :idx="index" useType="rank-list"></user-card>
@@ -37,7 +39,11 @@
         title: `预计成交率0-50%`,
         dataArray: [],
         page: 1,
-        limit: LIMIT
+        limit: LIMIT,
+        pullUpLoad: true,
+        pullUpLoadThreshold: 0,
+        pullUpLoadMoreTxt: '加载更多',
+        pullUpLoadNoMoreTxt: '没有更多了'
       }
     },
     created() {
@@ -53,12 +59,44 @@
         const data = {order_by: '', page: 1, limit: LIMIT}
         Client.getCusomerList(data).then(res => {
           if (res.error === ERR_OK) {
-            this.dataArray = res.data
+            this.dataArray = [...res.data, ...res.data, ...res.data]
             console.log(res)
           } else {
             this.$refs.toast.show(res.message)
           }
         })
+      },
+      onPullingUp() {
+        // 更新数据 todo
+        console.info('pulling up and load data')
+        let page = ++this.page
+        let limit = this.limit
+        const data = {order_by: '', page, limit}
+        Client.getCusomerList(data).then(res => {
+          if (res.error === ERR_OK) {
+            if (res.data && res.data.length) {
+              this.dataArray.concat(res.data)
+            } else {
+              this.$refs.scroll.forceUpdate()
+            }
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      rebuildScroll() {
+        this.nextTick(() => {
+          this.$refs.scroll.destroy()
+          this.$refs.scroll.initScroll()
+        })
+      }
+    },
+    watch: {
+      pullUpLoadObj: {
+        handler() {
+          this.rebuildScroll()
+        },
+        deep: true
       }
     },
     computed: {
@@ -74,6 +112,12 @@
           index = 3
         }
         return `background-color:${progressColor[index]}`
+      },
+      pullUpLoadObj: function () {
+        return this.pullUpLoad ? {
+          threshold: parseInt(this.pullUpLoadThreshold),
+          txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
+        } : false
       }
     },
     components: {
@@ -112,6 +156,7 @@
       background-color: $color-F0F2F5
     .content
       flex: 1
+      overflow :hidden
       .user-card-box
         height: 75px
         padding-left: 15px
