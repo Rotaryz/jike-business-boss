@@ -10,7 +10,7 @@
                 :data="dataArray"
         >
           <div class="user-card-box" v-for="(item,index) in dataArray" :key="index">
-            <user-card :cardInfo="item" :idx="index" useType="ranking"></user-card>
+            <user-card :cardInfo="item" :idx="index" useType="rank-list"></user-card>
           </div>
         </scroll>
       </section>
@@ -53,7 +53,7 @@
         const data = {order_by: '', page: 1, limit: LIMIT}
         Client.getCusomerList(data).then(res => {
           if (res.error === ERR_OK) {
-            this.dataArray = res.data.concat(res.data)
+            this.dataArray = res.data
             console.log(res)
           } else {
             this.$refs.toast.show(res.message)
