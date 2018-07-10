@@ -1,14 +1,12 @@
 <template>
   <div id="app">
-    <!--<ceiling></ceiling>-->
-    <router-view/>、
+    <router-view/>
     <tab></tab>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import Tab from 'components/tab/tab'
-  // import Ceiling from 'components/ceiling/ceiling'
 
   const COMPONENT_NAME = 'App'
 
@@ -19,7 +17,6 @@
     },
     components: {
       Tab
-      // Ceiling
     }
   }
 </script>
