@@ -1,22 +1,28 @@
 <template>
   <div id="app">
-    <router-view/>
+    <!--<ceiling></ceiling>-->
+    <router-view/>、
+    <tab></tab>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-export default {
-  name: 'App'
-}
+  import Tab from 'components/tab/tab'
+  // import Ceiling from 'components/ceiling/ceiling'
+
+  const COMPONENT_NAME = 'App'
+
+  export default {
+    name: COMPONENT_NAME,
+    data() {
+      return {}
+    },
+    components: {
+      Tab
+      // Ceiling
+    }
+  }
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
-  #app
-    font-family: 'Avenir', Helvetica, Arial, sans-serif
-    -webkit-font-smoothing: antialiased
-    -moz-osx-font-smoothing: grayscale
-    text-align: center
-    color: #2c3e50
-    margin-top: 60px
-
 </style>
