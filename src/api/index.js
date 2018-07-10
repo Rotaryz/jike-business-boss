@@ -7,6 +7,7 @@ import im from './im'
 import live from './live'
 import clientDetail from './clientDetail'
 import goods from './goods'
+import echart from './echart'
 
 // 授权模块
 export const Jwt = jwt
@@ -31,3 +32,6 @@ export const Im = im
 
 // 商品
 export const Goods = goods
+
+// 图表
+export const Echart = echart

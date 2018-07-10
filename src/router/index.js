@@ -7,6 +7,9 @@ const Overview = () => import('pages/overview/overview')
 const Ranking = () => import('pages/ranking/ranking')
 const AI = () => import('pages/ai-analyse/ai-analyse')
 const CustomerList = () => import('pages/customer-list/customer-list')
+const CustomerDetail = () => import('pages/customer-detail/customer-detail')
+const CustomerData = () => import('pages/customer-data/customer-data')
+const CustomerList = () => import('pages/customer-list/customer-list')
 
 Vue.use(Router)
 
@@ -26,7 +29,34 @@ const route = new Router({
       component: Overview,
       meta: {
         title: '总览'
-      }
+      },
+      children: [
+        {
+          path: 'customer-list',
+          component: CustomerList,
+          meta: {
+            title: '客户列表'
+          },
+          children: [
+            {
+              path: 'customer-detail',
+              component: CustomerDetail,
+              meta: {
+                title: '客户详情'
+              },
+              children: [
+                {
+                  path: 'customer-data',
+                  component: CustomerData,
+                  meta: {
+                    title: '客户资料'
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       path: '/ranking',
@@ -49,6 +79,20 @@ const route = new Router({
       component: AI,
       meta: {
         title: 'AI分析'
+      }
+    },
+    {
+      path: '/customer-detail',
+      component: CustomerDetail,
+      meta: {
+        title: '客户详情'
+      }
+    },
+    {
+      path: '/customer-data',
+      component: CustomerData,
+      meta: {
+        title: '客户详情'
       }
     }
   ]
