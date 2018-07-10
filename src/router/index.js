@@ -9,7 +9,6 @@ const AI = () => import('pages/ai-analyse/ai-analyse')
 const CustomerList = () => import('pages/customer-list/customer-list')
 const CustomerDetail = () => import('pages/customer-detail/customer-detail')
 const CustomerData = () => import('pages/customer-data/customer-data')
-const CustomerList = () => import('pages/customer-list/customer-list')
 
 Vue.use(Router)
 
