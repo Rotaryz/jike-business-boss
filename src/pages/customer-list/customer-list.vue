@@ -92,6 +92,7 @@
     fill-box()
     layout(column, block, nowrap)
     background-color: $color-white-fff
+    z-index: 10
     .progress
       height: 5px
     .title
