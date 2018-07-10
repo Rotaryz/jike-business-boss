@@ -17,4 +17,12 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
+
+  .overview
+    position :absolute
+    top: 62px
+    bottom :0
+    left:0
+    right :0
+    background-color :blue
 </style>
