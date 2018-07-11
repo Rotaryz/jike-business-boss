@@ -197,17 +197,6 @@
           <div class="btn" @click="hideModel">取消</div>
         </div>
       </div>
-      <!--<div class="bottom-box">-->
-        <!--<div class="box-btn" @click="phoneCall">-->
-          <!--<img src="./icon-telephone@2x.png" alt="" class="btn-img">-->
-          <!--<div class="text">打电话</div>-->
-        <!--</div>-->
-        <!--<img src="./icon-write@2x.png" alt="" class="add-jump" @click="toAddFlow" v-if="menuIdx * 1 === 1">-->
-        <!--<div class="box-btn message-btn" @click="jumpMessage">-->
-          <!--<img src="./icon-news@2x.png" alt="" class="btn-img">-->
-          <!--<div class="text">发消息</div>-->
-        <!--</div>-->
-      <!--</div>-->
       <router-view @refresh="refresh"></router-view>
       <toast ref="toast"></toast>
     </div>
@@ -334,21 +323,6 @@
             this.labelList = arr
           }
         })
-      },
-      toClientTag() {
-        let path = `${this.pageUrl}/client-tag`
-        this.$router.push({path, query: {customerId: this.id}})
-      },
-      chatMsg(item) {
-        console.log(item)
-        let currentMsg = {
-          nickName: item.nickName,
-          avatar: item.avatar,
-          account: item
-        }
-        this.setCurrent(currentMsg)
-        let url = '/chat?id=' + item.sessionId
-        this.$router.push(url)
       },
       scroll(pos) {
         let hightPx = pos.y * -1
@@ -506,12 +480,6 @@
           }]
         })
       },
-      showModel() {
-        this.showBox = false
-        setTimeout(() => {
-          this.showMode = false
-        }, 100)
-      },
       hideModel() {
         this.showMode = true
         setTimeout(() => {
@@ -538,6 +506,8 @@
         }, 1500)
       },
       switchTab(index) {
+        this.$refs.scroll.scrollTo(0, 0)
+        this.scroll(0)
         this.menuIdx = index
         if (index * 1 === 2) {
           setTimeout(() => {

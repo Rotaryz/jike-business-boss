@@ -332,21 +332,6 @@
       ...mapActions([
         'setCurrent'
       ]),
-      toClientTag() {
-        let path = `${this.pageUrl}/client-tag`
-        this.$router.push({path, query: {customerId: this.id}})
-      },
-      chatMsg(item) {
-        console.log(item)
-        let currentMsg = {
-          nickName: item.nickName,
-          avatar: item.avatar,
-          account: item
-        }
-        this.setCurrent(currentMsg)
-        let url = '/chat?id=' + item.sessionId
-        this.$router.push(url)
-      },
       scroll(pos) {
         let hightPx = pos.y * -1
         if (hightPx >= this.highgt) {
@@ -617,6 +602,8 @@
         myChart.on('click', this.eConsole)
       },
       switchTab(index) {
+        this.$refs.scroll.scrollTo(0, 0)
+        this.scroll(0)
         this.menuIdx = index
         if (index * 1 === 1) {
           setTimeout(() => {
