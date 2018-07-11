@@ -122,7 +122,6 @@
         Client.getCusomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = [...res.data, ...res.data, ...res.data]
-            console.log(res)
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -143,9 +142,8 @@
       },
       toCustomerList(item) {
         const id = item.id
-        const pathUrl = `/ranking/customer-list`
-        this.$router.push({path: pathUrl, query: {id, pathUrl}})
-        console.log(item)
+        const pageUrl = `/ranking/customer-list`
+        this.$router.push({path: pageUrl, query: {id, pageUrl}})
       },
       resetReqParams() {
         this.page = 1

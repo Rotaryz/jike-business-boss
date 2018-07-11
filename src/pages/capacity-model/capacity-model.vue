@@ -160,7 +160,7 @@
   import {mapActions} from 'vuex'
 
   export default {
-    name: 'client-detail',
+    name: 'CapacityModel',
     data() {
       return {
         listenScroll: true,
@@ -217,6 +217,7 @@
     created() {
       this.id = this.$route.query.id
       this.pageUrl = this.$route.query.pageUrl
+      console.log(this.pageUrl, '====')
       this.getClientId(this.id)
       this.getActionLineData()
       this.getPieData()
@@ -626,12 +627,12 @@
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
 
-  .tab-padding
-    height: 48px
-
   .client-detail
     fill-box()
-    z-index: 50
+    z-index: 70
+
+  .tab-padding
+    height: 48px
 
   .container
     fill-box(absolute)

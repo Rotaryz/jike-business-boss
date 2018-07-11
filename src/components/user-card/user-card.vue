@@ -14,7 +14,7 @@
         </div>
         <div class="info-box">
           <div class="number">{{cardInfo.name}}</div>
-          <div class="number">{{96}}</div>
+          <div class="number">销售力</div>
         </div>
       </section>
     </div>
