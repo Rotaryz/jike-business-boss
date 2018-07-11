@@ -6,7 +6,7 @@
             :pullUpLoad="pullUpLoadObj"
             @pullingUp="onPullingUp"
     >
-      <div class="user-card-box" v-for="(item,index) in dataArray" :key="index" @click="toCapacityModel">
+      <div class="user-card-box" v-for="(item,index) in dataArray" :key="index" @click="toCapacityModel(item)">
         <user-card :cardInfo="item" :idx="index" useType="ai"></user-card>
       </div>
     </scroll>
