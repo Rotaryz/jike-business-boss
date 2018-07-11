@@ -627,7 +627,9 @@
         this.$router.push({path, query: {id: this.id, flowId: this.flowId}})
       },
       jumpData() {
-        let path = `${this.pageUrl}/detail-data`
+        console.log(22)
+        let path = `${this.pageUrl}/customer-data`
+        console.log(path)
         this.$router.push({path, query: {id: this.id, flowId: this.flowId}})
       },
       jumpMessage() {

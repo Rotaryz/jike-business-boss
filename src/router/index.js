@@ -70,7 +70,25 @@ const route = new Router({
           component: CustomerList,
           meta: {
             title: '客户'
-          }
+          },
+          children: [
+            {
+              path: 'customer-detail',
+              component: CustomerDetail,
+              meta: {
+                title: '客户详情'
+              },
+              children: [
+                {
+                  path: 'customer-data',
+                  component: CustomerData,
+                  meta: {
+                    title: '客户资料'
+                  }
+                }
+              ]
+            }
+          ]
         }
       ]
     },
