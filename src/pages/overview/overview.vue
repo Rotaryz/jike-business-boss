@@ -39,7 +39,7 @@
       </div>
       <div class="ai-box">
         <div class="pie-box ">
-          <div id="myChartfour"></div>
+          <div id="mySuccess"></div>
           <div class="title-box">
             <div class="title">成交率漏斗</div>
             <div class="sub-title">(每小时更新)</div>
@@ -378,8 +378,8 @@
           }]
         })
       },
-      fourdraw() {
-        let myChart = this.$echarts.init(document.getElementById('myChartfour'))
+      drawSuccess() {
+        let myChart = this.$echarts.init(document.getElementById('mySuccess'))
         // 绘制图表
         myChart.setOption({
           // title: {
@@ -429,12 +429,7 @@
                 borderWidth: 1
               }
             },
-            data: [
-              {value: 80, name: '322'},
-              {value: 60, name: '155'},
-              {value: 40, name: '21'},
-              {value: 20, name: '0'}
-            ]
+            data: this.successData
           }]
         })
         myChart.on('click', this.eConsole)
@@ -483,7 +478,7 @@
         Echart.getSuccess(this.id).then(res => {
           if (res.error === ERR_OK) {
             this.successData = res.data
-            this.fourdraw()
+            this.drawSuccess()
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -632,7 +627,7 @@
         height: 300px
         margin: 20px auto
         padding: 35px 20px 0
-      #myChartfour
+      #mySuccess
         width: 100%
         height: 300px
         margin: 20px auto

@@ -22,11 +22,11 @@
                     <div class="label-right">
                       <div class="label-name">{{clientData.name}}</div>
                       <div class="label-box">
-                        <div class="full-name">招商总监</div>
+                        <div class="full-name">{{flow.job}}</div>
                       </div>
                     </div>
                   </div>
-                  <div class="detail-jump" @click="jumpData">
+                  <div class="detail-jump" @click="toBusinessCard">
                     <img class="jump-img" src="./icon-pressed@2x.png" alt="">
                   </div>
                 </div>
@@ -41,15 +41,91 @@
             </div>
           </div>
           <div class="capacity" v-if="menuIdx * 1 === 0">
+            <div class=""></div>
+            <div class=""></div>
+            <div class=""></div>
+            <div class=""></div>
+            <div class=""></div>
             <div class="six-box">
               <div class="six-model-box">
                 <div id="six-model"></div>
               </div>
             </div>
+            <div class="six-title">
+              <div class="six-top">
+                <div class="left">销售力综合排名</div>
+                <div class="right">3</div>
+              </div>
+              <div class="six-bottom">
+                <div class="left">销售力综合排名</div>
+                <div class="right">3</div>
+              </div>
+            </div>
           </div>
           <div class="ai-box" v-if="menuIdx * 1 === 1">
+            <div class="data-top">
+              <div class="cliten-box">
+                <div class="data-number-box">
+                  <img class="cliten-con-bg" src="./bg-customer_details@2x.png" alt="">
+                  <div class="data-tab">
+                    <div class="tab"   v-for="(item, index) in tabMoreList" v-bind:key="index" :class="tabNumber === index ? 'active' : '' " @click="getAllTab(item, index)">{{item.text}}</div>
+                  </div>
+                  <div class="data-list">
+                    <div class="list-box">
+                      <div class="number">{{allDatas.customer_sum}}</div>
+                      <div class="text">客户总数</div>
+                    </div>
+                    <div class="list-box">
+                      <div class="number">{{allDatas.follow_up_sum}}</div>
+                      <div class="text">跟进总数</div>
+                    </div>
+                    <div class="list-box">
+                      <div class="number">{{allDatas.card_visits_sum}}</div>
+                      <div class="text">名片访问数</div>
+                    </div>
+                    <div class="list-box">
+                      <div class="number">{{allDatas.website_visits_sum}}</div>
+                      <div class="text">官网访问数</div>
+                    </div>
+                    <div class="list-box">
+                      <div class="number">{{allDatas.goods_visits_sum}}</div>
+                      <div class="text">产品访问数</div>
+                    </div>
+                    <div class="list-box">
+                      <div class="number">{{allDatas.live_logs_sum}}</div>
+                      <div class="text">动态访问数</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="pie-box ">
+              <div id="mySuccess"></div>
+              <div class="title-box">
+                <div class="title">成交率漏斗</div>
+                <div class="sub-title">(每小时更新)</div>
+              </div>
+              <div class="bottom-des">
+                <div class="tab">
+                  <div class="icon"></div>
+                  <div class="text">0-50%</div>
+                </div>
+                <div class="tab">
+                  <div class="icon two"></div>
+                  <div class="text">51-80%</div>
+                </div>
+                <div class="tab">
+                  <div class="icon thr"></div>
+                  <div class="text">81-99%</div>
+                </div>
+                <div class="tab">
+                  <div class="icon four"></div>
+                  <div class="text">100%</div>
+                </div>
+              </div>
+            </div>
             <div class="pie-box">
-              <div id="myPie" v-if="menuIdx * 1 === 1"></div>
+              <div id="myPie"></div>
               <div class="title-box">
                 <div class="title">客户兴趣占比</div>
                 <div class="sub-title">(每小时更新)</div>
@@ -147,6 +223,7 @@
           <div class="chilen-line"></div>
         </div>
       </div>
+      <router-view></router-view>
       <toast ref="toast"></toast>
     </div>
   </transition>
@@ -168,20 +245,35 @@
         bcColor: '#F0F2F5',
         tabList: ['能力模型', '数据分析', '来访记录'],
         showMode: true,
+        tabMoreList: [
+          {
+            text: '全部',
+            value: 'all'
+          },
+          {
+            text: '昨天',
+            value: 'yesterday'
+          },
+          {
+            text: '7天',
+            value: 'week'
+          },
+          {
+            text: '30天',
+            value: 'month'
+          }
+        ],
         showBox: true,
         barIndex: null,
         menuIdx: 0,
         dataEcharts: false,
+        tabNumber: 0,
         clientData: {
           image_url: '',
           name: ''
         },
-        flow: {
-          progress: '',
-          create_follow_record: true
-        },
+        flow: {},
         id: '',
-        flowId: '',
         actionPage: 1,
         actionList: [],
         noActionMore: false,
@@ -211,23 +303,27 @@
           y: []
         },
         sixData: {},
-        showTab: false
+        showTab: false,
+        allDatas: {},
+        successData: []
       }
     },
     created() {
       this.id = this.$route.query.id
       this.pageUrl = this.$route.query.pageUrl
-      console.log(this.pageUrl, '====')
+      console.log(this.pageUrl, this.id, '====')
       this.getClientId(this.id)
       this.getActionLineData()
       this.getPieData()
       this.getBarData()
       this.getSixData()
+      this.getSuccessData()
+      this.getAllDataObj('all')
+      this.getNewActionList(this.id)
     },
     mounted() {
       this.highgt = this.$refs.eleven.offsetHeight
       this.tabhighgt = this.$refs.eleven.offsetHeight
-      console.log(this.$refs.eleven.offsetHeight, 111)
     },
     beforeDestroy() {
       this.$emit('refresh')
@@ -469,6 +565,57 @@
           ]
         })
       },
+      drawSuccess() {
+        let myChart = this.$echarts.init(document.getElementById('mySuccess'))
+        // 绘制图表
+        myChart.setOption({
+          tooltip: {
+            trigger: 'item',
+            formatter: '{b}'
+          },
+          series: [{
+            name: '漏斗图',
+            type: 'funnel',
+            left: '15%',
+            top: 55,
+            bottom: 40,
+            width: '70%',
+            minSize: '0%',
+            maxSize: '100%',
+            sort: 'descending',
+            gap: 2,
+            color: ['#F9B43C', '#F9543C', '#8E3C68', '#23799D'],
+            label: {
+              normal: {
+                show: true,
+                position: 'inside'
+              },
+              emphasis: {
+                textStyle: {
+                  fontSize: 20
+                }
+              }
+            },
+            labelLine: {
+              normal: {
+                length: 10,
+                lineStyle: {
+                  width: 1,
+                  type: 'solid'
+                }
+              }
+            },
+            itemStyle: {
+              normal: {
+                borderColor: '#fff',
+                borderWidth: 1
+              }
+            },
+            data: this.successData
+          }]
+        })
+        myChart.on('click', this.eConsole)
+      },
       switchTab(index) {
         this.menuIdx = index
         if (index * 1 === 1) {
@@ -476,6 +623,7 @@
             this.drawPie()
             this.drawLine()
             this.drawBar()
+            this.drawSuccess()
           }, 200)
         }
         if (index * 1 === 0) {
@@ -487,14 +635,26 @@
           this.$refs.scroll.forceUpdate()
         }, 20)
       },
+      getAllDataObj(time) {
+        Echart.getAllData(time, this.id).then(res => {
+          if (res.error === ERR_OK) {
+            this.allDatas = res.data
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
       getClientId(id) {
-        ClientDetail.getClientId(id).then((res) => {
+        ClientDetail.getClientDetail(id).then((res) => {
           if (res.error === ERR_OK) {
             this.clientData = res.data
-            this.id = res.data.id
-            this.flowId = res.data.flow_id
+            this.flow = res.data.flow
+            if (this.flow.real_name.length * 1 === 0) {
+              this.clientData.name = this.flow.real_name
+            } else {
+              this.clientData.name = this.flow.nickname
+            }
             this.mobile = res.data.mobile
-            this.getNewActionList(this.id)
           }
         })
       },
@@ -520,14 +680,11 @@
           }
         })
       },
-      jumpData() {
-        let path = `${this.pageUrl}/detail-data`
-        this.$router.push({path, query: {id: this.id, flowId: this.flowId}})
-      },
-      jumpMessage() {
-        let id = this.id
-        const path = `/chat?id=${id}`
-        this.$router.push({path})
+      toBusinessCard() {
+        const id = this.id
+        const pageUrl = `${this.pageUrl}/business-card`
+        console.log(pageUrl)
+        this.$router.push({path: pageUrl, query: {id, pageUrl}})
       },
       onPullingUp() {
         if (this.menuIdx * 1 === 0) {
@@ -581,6 +738,19 @@
           if (res.error === ERR_OK) {
             this.sixData = res.data
             this.drawSix()
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      getAllTab(item, index) {
+        this.getAllDataObj(item.value)
+        this.tabNumber = index
+      },
+      getSuccessData() {
+        Echart.getSuccess(this.id).then(res => {
+          if (res.error === ERR_OK) {
+            this.successData = res.data
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -781,11 +951,16 @@
       background: linear-gradient(rgba(255, 255, 255, .1) 0%, #fff 100%)
       height: 305px
       margin-bottom: 10px
-      #myPie
+      #mySuccess
         width: 100%
         height: 305px
         margin: 20px auto
         padding: 20px
+      #myChartfour
+        width: 100%
+        height: 300px
+        margin: 20px auto
+        padding: 35px 20px 0
       #six-model
         width: 100%
         height: 305px
@@ -816,6 +991,32 @@
           font-size: $font-size-small
           color: $color-text-88
           font-family: $font-family-meddle
+      .bottom-des
+        position: absolute
+        bottom: 10px
+        layout(row)
+        width: 100%
+        .tab
+          layout(row)
+          justify-content: center
+          align-items: center
+          width: 25%
+          .icon
+            background: #F9B43C
+            width: 6px
+            height: 6px
+            border-radius: 50%
+            margin-right: 3px
+          .two
+            background: #F9543C
+          .thr
+            background: #8E3C68
+          .four
+            background: #23799D
+          .text
+            font-size: $font-size-12
+            font-family: $font-family-regular
+            color: $color-text
       .pie-list
         layout(row)
         position: absolute
@@ -847,6 +1048,7 @@
       height: 270px
       #myLine
         height: 270px
+
   .six-box
     padding: 15px
     .six-model-box
@@ -859,6 +1061,7 @@
         height: 305px
         margin: 20px auto
         padding: 20px
+
   .msgs-item
     margin-bottom: 15px
     width: 100%
@@ -902,4 +1105,106 @@
 
   .msgs-item:last-child
     margin-bottom: 0
+  .six-title
+    padding: 0 15px 20px 30px
+    .six-top
+      layout(row)
+      justify-content: space-between
+      height: 45px
+      line-height: 45px
+      border-bottom: 0.5px solid rgba(0,0,0,.1)
+      .left
+        font-size: $font-size-16
+        color: #20202e
+        font-family: $font-family-meddle
+      .right
+        font-size: 25px
+        color: #20202e
+        font-family: 'DINCondensed-Bold'
+    .six-bottom
+      layout(row)
+      justify-content: space-between
+      height: 45px
+      line-height: 45px
+      border-bottom: 0.5px solid rgba(0,0,0,.1)
+      .left
+        font-size: $font-size-14
+        color: $color-text-88
+        font-family: $font-family-meddle
+      .right
+        font-size: 20px
+        color: $color-text-88
+        font-family: 'DINCondensed-Bold'
+
+  .data-top
+    position: relative
+    .cliten-bg
+      position: absolute
+      z-index: 1
+      height: 73px
+      background: #20202E
+      width: 100%
+      top: 0
+      left: 0
+    .cliten-box
+      position: relative
+      padding: 20px 15px 0
+      width: 100%
+      z-index: 2
+      .cliten-con-bg
+        position: absolute
+        display: block
+        width: 100%
+        height: 100%
+        left: 0px
+        top: 0px
+        z-index: 0
+
+      .data-number-box
+        padding-top: 20px
+        position: relative
+        background: #fff
+        z-index: 11
+        .data-tab
+          position: relative
+          z-index: 11
+          layout(row)
+          margin: 0 auto
+          width: 240px
+          border: 0.5px solid rgba(32, 32, 46, 0.1)
+          .tab
+            border-right: 0.5px solid rgba(32, 32, 46, 0.1)
+            height: 30px
+            font-size: $font-size-14
+            color: #20202E
+            font-family: $font-family-meddle
+            line-height: 30px
+            width: 25%
+            text-align: center
+          .tab:last-child
+            border-right: 0
+          .active
+            background: #20202e
+            color: #fff
+        .data-list
+          position: relative
+          z-index: 11
+          layout(row)
+          padding: 0 0 24px
+          .list-box
+            width: 33.33%
+            text-align: center
+            padding: 18px 0 0
+            .number
+              font-size: 32px
+              color: #20202e
+              font-family: 'DINCondensed-Bold'
+            .text
+              font-size: $font-size-12
+              color: #20202e
+              font-family: $font-family-meddle
+              margin-top: 5px
+
+  .z
+    width: 100%
 </style>

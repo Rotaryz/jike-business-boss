@@ -10,6 +10,7 @@ const CustomerList = () => import('pages/customer-list/customer-list')
 const CustomerDetail = () => import('pages/customer-detail/customer-detail')
 const CustomerData = () => import('pages/customer-data/customer-data')
 const CapacityModel = () => import('pages/capacity-model/capacity-model')
+const BusinessCard = () => import('pages/business-card/business-card')
 
 Vue.use(Router)
 
@@ -104,16 +105,16 @@ const route = new Router({
           component: CapacityModel,
           meta: {
             title: '能力模型'
-          }
-          // children: [
-          //   {
-          //     path: 'business-card',
-          //     component: CapacityModel,
-          //     meta: {
-          //       title: '名片'
-          //     }
-          //   }
-          // ]
+          },
+          children: [
+            {
+              path: 'business-card',
+              component: BusinessCard,
+              meta: {
+                title: '名片'
+              }
+            }
+          ]
         }
       ]
     },
@@ -136,6 +137,13 @@ const route = new Router({
       component: CapacityModel,
       meta: {
         title: '能力模型'
+      }
+    },
+    {
+      path: '/business-card',
+      component: BusinessCard,
+      meta: {
+        title: '名片'
       }
     }
   ]
