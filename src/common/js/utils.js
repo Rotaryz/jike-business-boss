@@ -1,3 +1,6 @@
+import _this from '@/main'
+import storage from 'storage-controller'
+
 export default class utils {
   static formatDate(time) {
     let resTime = new Date(time * 1000)
@@ -34,4 +37,43 @@ export default class utils {
     const str = n.toString()
     return str[1] ? str : `0${str}`
   }
+  // 错误码检查
+  static _handleErrorType(code) {
+    switch (code) {
+      case 404: {
+        _toErrorPage(`404`)
+        break
+      }
+      case 2: { // todo
+        _toErrorPage(`delcard`) // 名片被删除，请联系公司管理员
+        break
+      }
+      case 3: {
+        _toErrorPage(`disablecard`) // 名片被禁用，请联系公司管理员
+        break
+      }
+      case LOSE_EFFICACY: {
+        _handleLoseEfficacy()
+        break
+      }
+      default:
+        break
+    }
+  }
+}
+
+const LOSE_EFFICACY = 10000
+
+function _toErrorPage(useType) {
+  const path = `/page-error`
+  _this.$router.replace({path, query: {useType}})
+}
+
+function _handleLoseEfficacy() {
+  const currentRoute = _this.$route.path
+  if (currentRoute !== '/') {
+    storage.set('beforeLoginRoute', currentRoute)
+  }
+  storage.remove('token')
+  _this.$router.replace('/oauth')
 }

@@ -7,8 +7,9 @@
   import {Jwt} from 'api'
   import storage from 'storage-controller'
   import {ERR_OK} from 'common/js/config'
+  import utils from 'common/js/utils'
 
-  const NORMAL_ROUTE = '/radar'
+  const NORMAL_ROUTE = '/overview'
   const COMPONENT_NAME = 'Oauth'
   const oauth = new Oauth()
 
@@ -46,6 +47,7 @@
       _applyOauth() {
         Jwt.employeeLogin(this.code).then((res) => {
           if (res.error !== ERR_OK) {
+            utils._handleErrorType(this.code)
             // todo '跳去系统异常页面'
             return
           }

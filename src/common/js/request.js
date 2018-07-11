@@ -3,12 +3,11 @@
 import axios from 'axios'
 import { BASE_URL } from './config'
 import storage from 'storage-controller'
-import _this from '../../main'
+import utils from './utils'
 
 const TIME_OUT = 10000
 const ERR_OK = 0
 const ERR_NO = -404
-const LOSE_EFFICACY = 10000
 
 const http = axios.create({
   timeout: TIME_OUT
@@ -51,13 +50,7 @@ function checkCode (res) {
   // 如果网络请求成功，而提交的数据，或者是后端的一些未知错误所导致的，可以根据实际情况进行捕获异常
   if (res.data && (res.data.code !== ERR_OK)) {
     const code = res.data.code
-    switch (code) {
-      case LOSE_EFFICACY:
-        _handleLoseEfficacy()
-        break
-      default:
-        break
-    }
+    utils._handleErrorType(code)
     throw requestException(res.data)
   }
   return res.data
@@ -74,13 +67,6 @@ function requestException (res) {
     error.serverData = serviceData
   }
   return error
-}
-
-function _handleLoseEfficacy() {
-  const currentRoute = _this.$route.path
-  storage.set('beforeLoginRoute', currentRoute)
-  storage.remove('token')
-  _this.$router.replace('/oauth?code=b-ZtFkvBMjwzJEMfd_-x5mo2HYQfWFcTwW_KmN3m57s&state=STATE')
 }
 
 export default {

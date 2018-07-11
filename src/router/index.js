@@ -11,6 +11,7 @@ const CustomerDetail = () => import('pages/customer-detail/customer-detail')
 const CustomerData = () => import('pages/customer-data/customer-data')
 const CapacityModel = () => import('pages/capacity-model/capacity-model')
 const BusinessCard = () => import('pages/business-card/business-card')
+const PageError = () => import('pages/page-error/page-error')
 
 Vue.use(Router)
 
@@ -24,6 +25,13 @@ const route = new Router({
     {
       path: '/oauth',
       component: Oauth
+    },
+    {
+      path: '/page-error',
+      component: PageError,
+      meta: {
+        title: '异常'
+      }
     },
     {
       path: '/overview',
