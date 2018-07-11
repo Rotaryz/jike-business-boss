@@ -1,6 +1,5 @@
 <template>
   <article class="ranking">
-    <router-link to="/ranking/customer-list">客户列表</router-link>
     <section class="tool-bar-box">
       <ul class="tab-one">
         <li :class="['tab-one-item',tabOneIndex===index?'active':'']"
@@ -143,6 +142,9 @@
         this.resetReqParams()
       },
       toCustomerList(item) {
+        const id = item.id
+        const pathUrl = `/ranking/customer-list`
+        this.$router.push({path: pathUrl, query: {id, pathUrl}})
         console.log(item)
       },
       resetReqParams() {

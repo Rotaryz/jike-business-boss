@@ -11,7 +11,7 @@
                 :pullUpLoad="pullUpLoadObj"
                 @pullingUp="onPullingUp"
         >
-          <div class="user-card-box" v-for="(item,index) in dataArray" :key="index">
+          <div class="user-card-box" v-for="(item,index) in dataArray" :key="index" @click="toCustomerDetail">
             <user-card :cardInfo="item" :idx="index" useType="rank-list"></user-card>
           </div>
         </scroll>
@@ -43,13 +43,22 @@
         pullUpLoad: true,
         pullUpLoadThreshold: 0,
         pullUpLoadMoreTxt: '加载更多',
-        pullUpLoadNoMoreTxt: '没有更多了'
+        pullUpLoadNoMoreTxt: '没有更多了',
+        pathUrl: '', // 父级路由
+        customerId: '' // 员工ID
       }
     },
     created() {
       this.getCustomerList()
+      this.customerId = this.$route.query.id
+      this.pathUrl = this.$route.query.pathUrl
     },
     methods: {
+      toCustomerDetail(item){
+        const id = item.id
+        const pathUrl = this.pathUrl + ``
+        this.$router.push({path: pathUrl, query: {id, pathUrl}})
+      },
       refresh() {
         setTimeout(() => {
           console.info('list refresh')
