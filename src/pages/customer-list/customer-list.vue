@@ -165,7 +165,7 @@
       background-color: $color-F0F2F5
     .content
       flex: 1
-      overflow :hidden
+      overflow: hidden
       .user-card-box
         height: 75px
         padding-left: 15px
