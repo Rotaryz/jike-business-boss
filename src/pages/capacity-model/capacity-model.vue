@@ -41,15 +41,15 @@
             </div>
           </div>
           <div class="capacity" v-if="menuIdx * 1 === 0">
-            <div class="ai-box">
-              <div class="pie-box">
+            <div class="six-box">
+              <div class="six-model-box">
                 <div id="six-model"></div>
               </div>
             </div>
           </div>
           <div class="ai-box" v-if="menuIdx * 1 === 1">
             <div class="pie-box">
-              <div id="myPie"></div>
+              <div id="myPie" v-if="menuIdx * 1 === 1"></div>
               <div class="title-box">
                 <div class="title">客户兴趣占比</div>
                 <div class="sub-title">(每小时更新)</div>
@@ -477,6 +477,11 @@
             this.drawBar()
           }, 200)
         }
+        if (index * 1 === 0) {
+          setTimeout(() => {
+            this.drawSix()
+          }, 200)
+        }
         setTimeout(() => {
           this.$refs.scroll.forceUpdate()
         }, 20)
@@ -841,7 +846,18 @@
       height: 270px
       #myLine
         height: 270px
-
+  .six-box
+    padding: 15px
+    .six-model-box
+      position: relative
+      background: linear-gradient(rgba(255, 255, 255, .1) 0%, #fff 100%)
+      height: 305px
+      margin-bottom: 10px
+      #six-model
+        width: 100%
+        height: 305px
+        margin: 20px auto
+        padding: 20px
   .msgs-item
     margin-bottom: 15px
     width: 100%
