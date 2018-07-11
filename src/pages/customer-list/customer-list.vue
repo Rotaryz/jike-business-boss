@@ -44,20 +44,20 @@
         pullUpLoadThreshold: 0,
         pullUpLoadMoreTxt: '加载更多',
         pullUpLoadNoMoreTxt: '没有更多了',
-        pathUrl: '', // 父级路由
+        pageUrl: '', // 父级路由
         customerId: '' // 员工ID
       }
     },
     created() {
       this.getCustomerList()
       this.customerId = this.$route.query.id
-      this.pathUrl = this.$route.query.pathUrl
+      this.pageUrl = this.$route.query.pathUrl
     },
     methods: {
-      toCustomerDetail(item){
+      toCustomerDetail(item) {
         const id = item.id
-        const pathUrl = this.pathUrl + ``
-        this.$router.push({path: pathUrl, query: {id, pathUrl}})
+        const pageUrl = this.pageUrl + `/customer-detail`
+        this.$router.push({path: pageUrl, query: {id, pageUrl}})
       },
       refresh() {
         setTimeout(() => {
