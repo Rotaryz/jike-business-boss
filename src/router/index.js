@@ -9,6 +9,7 @@ const AI = () => import('pages/ai-analyse/ai-analyse')
 const CustomerList = () => import('pages/customer-list/customer-list')
 const CustomerDetail = () => import('pages/customer-detail/customer-detail')
 const CustomerData = () => import('pages/customer-data/customer-data')
+const CapacityModel = () => import('pages/capacity-model/capacity-model')
 
 Vue.use(Router)
 
@@ -92,6 +93,13 @@ const route = new Router({
       component: CustomerData,
       meta: {
         title: '客户详情'
+      }
+    },
+    {
+      path: '/capacity-model',
+      component: CapacityModel,
+      meta: {
+        title: '能力模型'
       }
     }
   ]
