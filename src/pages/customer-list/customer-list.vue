@@ -51,7 +51,7 @@
     created() {
       this.getCustomerList()
       this.customerId = this.$route.query.id
-      this.pageUrl = this.$route.query.pathUrl
+      this.pageUrl = this.$route.query.pageUrl
     },
     methods: {
       toCustomerDetail(item) {

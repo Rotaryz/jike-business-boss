@@ -97,7 +97,25 @@ const route = new Router({
       component: AI,
       meta: {
         title: 'AI分析'
-      }
+      },
+      children: [
+        {
+          path: 'capacity-model',
+          component: CapacityModel,
+          meta: {
+            title: '能力模型'
+          }
+          // children: [
+          //   {
+          //     path: 'business-card',
+          //     component: CapacityModel,
+          //     meta: {
+          //       title: '名片'
+          //     }
+          //   }
+          // ]
+        }
+      ]
     },
     {
       path: '/customer-detail',
