@@ -54,7 +54,7 @@
       this.pathUrl = this.$route.query.pathUrl
     },
     methods: {
-      toCustomerDetail(item){
+      toCustomerDetail(item) {
         const id = item.id
         const pathUrl = this.pathUrl + ``
         this.$router.push({path: pathUrl, query: {id, pathUrl}})
@@ -165,7 +165,7 @@
       background-color: $color-F0F2F5
     .content
       flex: 1
-      overflow :hidden
+      overflow: hidden
       .user-card-box
         height: 75px
         padding-left: 15px

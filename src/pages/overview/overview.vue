@@ -491,7 +491,9 @@
       },
       eConsole(param) {
         if (param.name > 0) {
-          this.$router.push('/')
+          const id = param.name
+          const pathUrl = `/overview/customer-list`
+          this.$router.push({path: pathUrl, query: {id, pathUrl}})
         }
       },
       getAllDataObj(time) {
