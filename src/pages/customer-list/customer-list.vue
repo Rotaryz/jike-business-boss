@@ -1,20 +1,25 @@
 <template>
   <transition name="slide">
     <article class="customer-list">
-      <div class="progress" :style="progressStyle"></div>
-      <div class="title">{{title}}</div>
-      <div class="info-bar">全部 {{dataArray.length}} 位</div>
-      <section class="content">
-        <scroll ref="scroll"
-                bcColor="#fff"
-                :data="dataArray"
-                :pullUpLoad="pullUpLoadObj"
-                @pullingUp="onPullingUp"
-        >
-          <div class="user-card-box" v-for="(item,index) in dataArray" :key="index" @click="toCustomerDetail">
-            <user-card :cardInfo="item" :idx="index" useType="rank-list"></user-card>
-          </div>
-        </scroll>
+      <div v-if="dataArray.length">
+        <div class="progress" :style="progressStyle"></div>
+        <div class="title">{{title}}</div>
+        <div class="info-bar">全部 {{dataArray.length}} 位</div>
+        <section class="content">
+          <scroll ref="scroll"
+                  bcColor="#fff"
+                  :data="dataArray"
+                  :pullUpLoad="pullUpLoadObj"
+                  @pullingUp="onPullingUp"
+          >
+            <div class="user-card-box" v-for="(item,index) in dataArray" :key="index" @click="toCustomerDetail">
+              <user-card :cardInfo="item" :idx="index" useType="rank-list"></user-card>
+            </div>
+          </scroll>
+        </section>
+      </div>
+      <section class="exception-box" v-else>
+        <exception errType="customer"></exception>
       </section>
       <toast ref="toast"></toast>
       <router-view @refresh="refresh"></router-view>
@@ -28,6 +33,7 @@
   import {Client} from 'api'
   import Toast from 'components/toast/toast'
   import {ERR_OK} from '../../common/js/config'
+  import Exception from 'components/exception/exception'
 
   const progressColor = ['#57BA15', '#F9B43C', '#F9863C', '#F9543D']
   const LIMIT = 10
@@ -68,8 +74,7 @@
         const data = {order_by: '', page: 1, limit: LIMIT}
         Client.getCusomerList(data).then(res => {
           if (res.error === ERR_OK) {
-            this.dataArray = [...res.data, ...res.data, ...res.data]
-            console.log(res)
+            // this.dataArray = [...res.data, ...res.data, ...res.data]
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -132,7 +137,8 @@
     components: {
       UserCard,
       Scroll,
-      Toast
+      Toast,
+      Exception
     }
   }
 </script>
@@ -140,6 +146,9 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
+
+  .exception-box
+    padding-top: 137px
 
   .customer-list
     fill-box()

@@ -1,6 +1,7 @@
 <template>
   <article class="ai-analyse">
     <scroll ref="scroll"
+            v-if="dataArray.length"
             bcColor="#fff"
             :data="dataArray"
             :pullUpLoad="pullUpLoadObj"
@@ -10,6 +11,9 @@
         <user-card :cardInfo="item" :idx="index" useType="ai"></user-card>
       </div>
     </scroll>
+    <section class="exception-box" v-else>
+      <exception errType="nodata"></exception>
+    </section>
     <router-view @refresh="refresh"></router-view>
   </article>
 </template>
@@ -19,7 +23,8 @@
   import Scroll from 'components/scroll/scroll'
   import {Client} from 'api'
   import Toast from 'components/toast/toast'
-  import {ERR_OK} from '../../common/js/config'
+  import {ERR_OK} from 'common/js/config'
+  import Exception from 'components/exception/exception'
 
   const LIMIT = 10
   export default {
@@ -55,7 +60,7 @@
         const data = {order_by: '', page: 1, limit: LIMIT}
         Client.getCusomerList(data).then(res => {
           if (res.error === ERR_OK) {
-            this.dataArray = [...res.data, ...res.data, ...res.data]
+            // this.dataArray = [...res.data, ...res.data, ...res.data]
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -105,7 +110,8 @@
     components: {
       UserCard,
       Scroll,
-      Toast
+      Toast,
+      Exception
     }
   }
 </script>
@@ -113,6 +119,9 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
+
+  .exception-box
+    padding-top: 137px
 
   .ai-analyse
     position: absolute

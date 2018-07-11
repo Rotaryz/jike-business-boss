@@ -52,6 +52,7 @@
     </section>
     <section class="content">
       <scroll ref="scroll"
+              v-if="dataArray.length"
               bcColor="#fff"
               :data="dataArray"
               :pullUpLoad="pullUpLoadObj"
@@ -65,6 +66,9 @@
           <user-card :cardInfo="item" :idx="index" useType="ranking"></user-card>
         </div>
       </scroll>
+      <section class="exception-box" v-else>
+        <exception errType="nodata"></exception>
+      </section>
     </section>
     <action-sheet ref="sheet" :dataArray="groupList" @changeGroup="changeGroup"></action-sheet>
     <toast ref="toast"></toast>
@@ -79,6 +83,7 @@
   import Toast from 'components/toast/toast'
   import {ERR_OK} from '../../common/js/config'
   import ActionSheet from 'components/action-sheet/action-sheet'
+  import Exception from 'components/exception/exception'
 
   const LIMIT = 10
   const tabOne = ['按客户数', '按互动数', '按成交率']
@@ -209,7 +214,8 @@
       UserCard,
       Scroll,
       Toast,
-      ActionSheet
+      ActionSheet,
+      Exception
     }
   }
 </script>
@@ -217,6 +223,9 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
+
+  .exception-box
+    padding-top: 70px
 
   .ranking
     position: fixed
