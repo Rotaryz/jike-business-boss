@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <article class="data-all">
       <scroll>
         <div class="data-box">
@@ -118,6 +118,7 @@
   import Scroll from 'components/scroll/scroll'
   import Toast from 'components/toast/toast'
   import VueClipboard from 'vue-clipboard2'
+  import {mapGetters} from 'vuex'
   Vue.use(VueClipboard)
 
   export default {
@@ -207,6 +208,12 @@
       },
       onError(e) {
         console.log('无法复制文本！')
+      }
+    },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     components: {

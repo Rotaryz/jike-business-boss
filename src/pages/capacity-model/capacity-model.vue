@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <div class="client-detail">
       <div class="container">
         <scroll ref="scroll"
@@ -234,7 +234,7 @@
   import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
-  import {mapActions} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
 
   export default {
     name: 'CapacityModel',
@@ -754,6 +754,10 @@
           threshold: parseInt(this.pullUpLoadThreshold),
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
+      },
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     filters: {

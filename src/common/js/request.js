@@ -76,7 +76,8 @@ export default {
       url,
       data, // post 请求时带的参数
       headers: {
-        Authorization: storage.get('token')
+        Authorization: storage.get('token'),
+        Radar: 'boss'
       }
     }).then((response) => {
       return checkStatus(response)
@@ -90,7 +91,8 @@ export default {
       url,
       params, // get 请求时带的参数
       headers: {
-        Authorization: storage.get('token')
+        Authorization: storage.get('token'),
+        Radar: 'boss'
       }
     }).then((response) => {
       return checkStatus(response)
@@ -104,7 +106,8 @@ export default {
       url,
       data, // put 请求时带的参数
       headers: {
-        Authorization: storage.get('token')
+        Authorization: storage.get('token'),
+        Radar: 'boss'
       }
     }).then((response) => {
       return checkStatus(response)
@@ -118,7 +121,8 @@ export default {
       url,
       data, // put 请求时带的参数
       headers: {
-        Authorization: storage.get('token')
+        Authorization: storage.get('token'),
+        Radar: 'boss'
       }
     }).then((response) => {
       return checkStatus(response)

@@ -60,6 +60,14 @@ export default class utils {
         break
     }
   }
+  // 获取设备信息
+  static getPlatform() {
+    const navigator = window.navigator
+    const u = navigator.userAgent
+    // const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1 // android终端或者uc浏览器
+    const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
+    return isiOS ? 'ios' : 'android'
+  }
 }
 
 const LOSE_EFFICACY = 10000

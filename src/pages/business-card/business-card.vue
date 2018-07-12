@@ -1,6 +1,5 @@
 <template>
-  <transition name="slide">
-
+  <transition :name="slide">
     <div class="share-card">
       <scroll :bcColor="'#20202E'">
         <div class="share-box">
@@ -18,6 +17,7 @@
 <script>
   import Scroll from 'components/scroll/scroll'
   import { Business } from 'api'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'share-card',
@@ -31,6 +31,12 @@
         this.card = res.data || {}
         console.log(res)
       })
+    },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
+      }
     },
     components: {
       Scroll

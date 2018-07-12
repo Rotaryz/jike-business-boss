@@ -60,7 +60,7 @@
         const data = {order_by: '', page: 1, limit: LIMIT}
         Client.getCusomerList(data).then(res => {
           if (res.error === ERR_OK) {
-            // this.dataArray = [...res.data, ...res.data, ...res.data]
+            this.dataArray = [...res.data, ...res.data, ...res.data]
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -130,6 +130,7 @@
     left: 0
     right: 0
     overflow: hidden
+    background-color :$color-white-fff
     .user-card-box
       height: 75px
       padding-left: 15px

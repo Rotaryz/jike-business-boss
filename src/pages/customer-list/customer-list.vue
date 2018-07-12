@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <article class="customer-list">
       <div v-if="dataArray.length">
         <div class="progress" :style="progressStyle"></div>
@@ -34,6 +34,7 @@
   import Toast from 'components/toast/toast'
   import {ERR_OK} from '../../common/js/config'
   import Exception from 'components/exception/exception'
+  import {mapGetters} from 'vuex'
 
   const progressColor = ['#57BA15', '#F9B43C', '#F9863C', '#F9543D']
   const LIMIT = 10
@@ -132,6 +133,10 @@
           threshold: parseInt(this.pullUpLoadThreshold),
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
+      },
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     components: {
