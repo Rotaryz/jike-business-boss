@@ -103,10 +103,10 @@
       left: 0
       display: flex
       justify-content: center
-      align-items :center
+      align-items: center
       height: 100%
       transition: all .3s
-      transform: translate3d(0, 0 , 0)
+      transform: translate3d(0, 0, 0)
       .line
         width: 85px
         height: 32px
