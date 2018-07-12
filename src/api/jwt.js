@@ -10,7 +10,7 @@ export default {
     const url = '/api/jwt/employee-login'
     const data = {
       code,
-      suite_alias: 'ai_radar'
+      suite_alias: 'boss_radar'
     }
     return request.post(url, data)
   }
