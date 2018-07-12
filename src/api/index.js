@@ -9,6 +9,7 @@ import clientDetail from './clientDetail'
 import goods from './goods'
 import echart from './echart'
 import rank from './rank'
+import analyse from './ai-analyse'
 
 // 授权模块
 export const Jwt = jwt
@@ -39,3 +40,6 @@ export const Echart = echart
 
 // 排行榜
 export const Rank = rank
+
+// ai分析
+export const Analyse = analyse

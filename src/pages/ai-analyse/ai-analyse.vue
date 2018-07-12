@@ -11,7 +11,7 @@
         <user-card :cardInfo="item" :idx="index" useType="ai"></user-card>
       </div>
     </scroll>
-    <section class="exception-box" v-else>
+    <section class="exception-box" v-if="isEmpty">
       <exception errType="nodata"></exception>
     </section>
     <router-view @refresh="refresh"></router-view>
@@ -21,7 +21,7 @@
 <script type="text/ecmascript-6">
   import UserCard from 'components/user-card/user-card'
   import Scroll from 'components/scroll/scroll'
-  import {Client} from 'api'
+  import {Analyse} from 'api'
   import Toast from 'components/toast/toast'
   import {ERR_OK} from 'common/js/config'
   import Exception from 'components/exception/exception'
@@ -32,6 +32,7 @@
     data() {
       return {
         dataArray: [],
+        isEmpty: false,
         page: 1,
         limit: LIMIT,
         pullUpLoad: true,
@@ -42,7 +43,7 @@
     },
     created() {
       this.$emit('tabChange', 3)
-      this.getCustomerList()
+      this._rqGetStaffSellList()
     },
     methods: {
       refresh() {
@@ -56,11 +57,12 @@
         console.log(pageUrl)
         this.$router.push({path: pageUrl, query: {id, pageUrl}})
       },
-      getCustomerList() {
-        const data = {order_by: '', page: 1, limit: LIMIT}
-        Client.getCusomerList(data).then(res => {
+      _rqGetStaffSellList() {
+        const data = {page: 1, limit: LIMIT}
+        Analyse.getStaffSellList(data).then(res => {
           if (res.error === ERR_OK) {
-            this.dataArray = [...res.data, ...res.data, ...res.data]
+            this.dataArray = res.data
+            this.isEmpty = !this.dataArray.length
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -71,11 +73,12 @@
         console.info('pulling up and load data')
         let page = ++this.page
         let limit = this.limit
-        const data = {order_by: '', page, limit}
-        Client.getCusomerList(data).then(res => {
+        const data = {page, limit}
+        Analyse.getStaffSellList(data).then(res => {
           if (res.error === ERR_OK) {
             if (res.data && res.data.length) {
-              this.dataArray.concat(res.data)
+              let newArr = this.dataArray.concat(res.data)
+              this.dataArray = newArr
             } else {
               this.$refs.scroll.forceUpdate()
             }
@@ -130,7 +133,7 @@
     left: 0
     right: 0
     overflow: hidden
-    background-color :$color-white-fff
+    background-color: $color-white-fff
     .user-card-box
       height: 75px
       padding-left: 15px

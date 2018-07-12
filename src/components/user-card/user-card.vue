@@ -6,14 +6,14 @@
       <div class="rank two" v-else-if="idx===1"></div>
       <div class="rank three" v-else-if="idx===2"></div>
       <div class="rank" v-else>{{idx+1}}</div>
-      <img class="user-logo" :src="cardInfo.image_url" alt="">
+      <img class="user-logo" :src="cardInfo.avatar" alt="">
       <section class="user-info">
         <div class="info-box">
           <div class="name">{{cardInfo.name}}</div>
-          <div class="name">{{96}}</div>
+          <div class="name">{{cardInfo.position}}</div>
         </div>
         <div class="info-box">
-          <div class="number">{{cardInfo.name}}</div>
+          <div class="number">{{cardInfo.number}}</div>
           <div class="number">销售力</div>
         </div>
       </section>

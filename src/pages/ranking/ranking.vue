@@ -66,7 +66,7 @@
           <user-card :cardInfo="item" :idx="index" useType="ranking"></user-card>
         </div>
       </scroll>
-      <section class="exception-box" v-else>
+      <section class="exception-box" v-if="isEmpty">
         <exception errType="nodata"></exception>
       </section>
     </section>
@@ -98,6 +98,7 @@
       return {
         groupList,
         dataArray: [],
+        isEmpty: false,
         page: 1,
         limit: LIMIT,
         tabOne,
@@ -110,7 +111,8 @@
         pullUpLoad: true,
         pullUpLoadThreshold: 0,
         pullUpLoadMoreTxt: '加载更多',
-        pullUpLoadNoMoreTxt: '没有更多了'
+        pullUpLoadNoMoreTxt: '没有更多了',
+        isAll: false // 是否加载完了
       }
     },
     created() {
@@ -124,6 +126,7 @@
         }, 300)
       },
       _rqGetMoreStaffList() {
+        console.log(222)
         const _data = this._formatData()
         let page = ++this.page
         let limit = this.limit
@@ -140,6 +143,7 @@
               let newArr = this.dataArray.concat(res.data)
               this.dataArray = newArr
             } else {
+              this.isAll = true
               this.$refs.scroll.forceUpdate()
             }
           } else {
@@ -151,6 +155,7 @@
         // tab类型 1：按客户数，2：跟进客户数，3：咨询客户数，4：按成交率 - 1
         // 事件类型： all yesterday week month - all
         // 成功率类型 1： 0~50% 2：51%~80% 3：81~99%，4：100% - 0
+        this.isAll = true
         const _data = this._formatData()
         const data = {
           merchant_id: 0,
@@ -162,6 +167,7 @@
         Rank.getStaffList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = res.data
+            this.isEmpty = !this.dataArray.length
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -247,8 +253,9 @@
         this.limit = LIMIT
       },
       onPullingUp() {
-        // 更新数据 todo
+        // 更新数据
         console.info('pulling up and load data')
+        // if (this.isAll) return this.$refs.scroll.forceUpdate()
         this._rqGetMoreStaffList()
       },
       rebuildScroll() {
