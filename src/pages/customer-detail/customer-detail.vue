@@ -305,7 +305,7 @@
       this.employee_id = this.$route.query.employee_id
       this.pageUrl = this.$route.query.pageUrl
       this.getClientId(this.id)
-      this.getCusomerTagList()
+      this.getCustomerTagList()
       this.getActionLineData()
       this.getPieData()
       this.getBarData()
@@ -326,8 +326,8 @@
           this.getCusomerTagList()
         }, 300)
       },
-      getCusomerTagList() {
-        Client.getCusomerTagList({customer_id: this.id}).then(res => {
+      getCustomerTagList() {
+        Client.getCustomerTagList({customer_id: this.id}).then(res => {
           if (res.error === ERR_OK) {
             let arr = res.data.slice(0, 3)
             this.labelList = arr

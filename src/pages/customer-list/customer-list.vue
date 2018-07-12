@@ -30,9 +30,8 @@
 <script type="text/ecmascript-6">
   import UserCard from 'components/user-card/user-card'
   import Scroll from 'components/scroll/scroll'
-  import {Client} from 'api'
   import Toast from 'components/toast/toast'
-  import {ERR_OK} from '../../common/js/config'
+  // import {ERR_OK} from '../../common/js/config'
   import Exception from 'components/exception/exception'
   import {mapGetters} from 'vuex'
 
@@ -63,7 +62,6 @@
     },
     created() {
       this._getParams()
-      this.getCustomerList()
     },
     methods: {
       _getParams() {
@@ -84,34 +82,34 @@
         }, 300)
       },
       getCustomerList() {
-        const data = {order_by: '', page: 1, limit: LIMIT}
-        Client.getCusomerList(data).then(res => {
-          if (res.error === ERR_OK) {
-            this.dataArray = [...res.data, ...res.data, ...res.data]
-            this.isEmpty = !this.dataArray.length
-          } else {
-            this.$refs.toast.show(res.message)
-          }
-        })
+        // const data = {order_by: '', page: 1, limit: LIMIT}
+        // Client.getCusomerList(data).then(res => {、
+        //   if (res.error === ERR_OK) {
+        //     this.dataArray = [...res.data, ...res.data, ...res.data]
+        //     this.isEmpty = !this.dataArray.length
+        //   } else {
+        //     this.$refs.toast.show(res.message)
+        //   }
+        // })
       },
       onPullingUp() {
         // 更新数据 todo
         console.info('pulling up and load data')
-        let page = ++this.page
-        let limit = this.limit
-        const data = {order_by: '', page, limit}
-        Client.getCusomerList(data).then(res => {
-          if (res.error === ERR_OK) {
-            if (res.data && res.data.length) {
-              let newArr = this.dataArray.concat(res.data)
-              this.dataArray = newArr
-            } else {
-              this.$refs.scroll.forceUpdate()
-            }
-          } else {
-            this.$refs.toast.show(res.message)
-          }
-        })
+        // let page = ++this.page
+        // let limit = this.limit
+        // const data = {order_by: '', page, limit}
+        // Client.getCusomerList(data).then(res => {
+        //   if (res.error === ERR_OK) {
+        //     if (res.data && res.data.length) {
+        //       let newArr = this.dataArray.concat(res.data)
+        //       this.dataArray = newArr
+        //     } else {
+        //       this.$refs.scroll.forceUpdate()
+        //     }
+        //   } else {
+        //     this.$refs.toast.show(res.message)
+        //   }
+        // })
       },
       rebuildScroll() {
         this.nextTick(() => {
