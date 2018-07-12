@@ -1,5 +1,5 @@
 <template>
-  <transition :name="slide">
+  <transition name="slide">
     <div class="client-detail">
       <div class="container">
         <scroll ref="scroll"
@@ -8,6 +8,7 @@
                 :bcColor="bcColor"
                 :listenScroll="listenScroll"
                 @scroll="scroll"
+                :showNoMore="false"
                 :pullUpLoad="pullUpLoadObj"
                 @pullingUp="onPullingUp">
           <div v-if="!showTab">
@@ -73,7 +74,10 @@
           </div>
           <div class="tab-padding" :style="'height:' + (highgt + 48)  + 'px'  " v-if="showTab"></div>
           <div class="visitor-box" v-if="menuIdx * 1 === 0">
-            <div class="box-list">
+            <section class="exception-box" v-if="actionList.length * 1 === 0">
+              <exception errType="nodata"></exception>
+            </section>
+            <div class="box-list"  v-if="actionList.length * 1 != 0">
               <div class="msgs-item" v-for="(item, index) in actionList" :key="index">
                 <img :src="item.image_url" class="msgs-left">
                 <div class="msgs-right">
@@ -104,6 +108,7 @@
                     <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span
                       class="green">保存</span>了你的<span
                       class="green">电话</span>，可以考虑主动沟通</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10009">{{item.nickname}}<span class="green">保存</span>了你的<span class="green">名片海报</span></p>
                     <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span
                       class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
                     <p class="msgs-p" v-show="item.event_no * 1 === 20002">{{item.nickname}}正在<span
@@ -127,7 +132,10 @@
               </div>
             </div>
           </div>
-          <div class="follow-box" v-if="menuIdx * 1 === 1">
+          <section class="exception-box" v-if="menuIdx * 1 === 1 && flowList.length * 1 === 0">
+            <exception errType="nodata"></exception>
+          </section>
+          <div class="follow-box" v-if="menuIdx * 1 === 1 && flowList.length * 1 !== 0">
             <div class="follow-line"></div>
             <div class="follow-list" v-for="(item, index) in flowList" :key="index">
               <div class="time">{{item.created_at}}</div>
@@ -208,7 +216,9 @@
   import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
-  import {mapActions, mapGetters} from 'vuex'
+  import {mapActions} from 'vuex'
+  import storage from 'storage-controller'
+  import Exception from 'components/exception/exception'
 
   export default {
     name: 'client-detail',
@@ -286,11 +296,13 @@
           x: [],
           y: []
         },
-        showTab: false
+        showTab: false,
+        employee_id: null
       }
     },
     created() {
       this.id = this.$route.query.id
+      this.employee_id = this.$route.query.employee_id
       this.pageUrl = this.$route.query.pageUrl
       this.getClientId(this.id)
       this.getCusomerTagList()
@@ -301,7 +313,6 @@
     mounted() {
       this.highgt = this.$refs.eleven.offsetHeight
       this.tabhighgt = this.$refs.eleven.offsetHeight
-      console.log(this.$refs.eleven.offsetHeight, 111)
     },
     beforeDestroy() {
       this.$emit('refresh')
@@ -317,7 +328,6 @@
       },
       getCusomerTagList() {
         Client.getCusomerTagList({customer_id: this.id}).then(res => {
-          // console.log(res)
           if (res.error === ERR_OK) {
             let arr = res.data.slice(0, 3)
             this.labelList = arr
@@ -382,6 +392,11 @@
               lineStyle: {
                 color: '#ddd'
               }
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#888'
+              }
             }
           },
           tooltip: {
@@ -398,6 +413,11 @@
               show: true,
               lineStyle: {
                 color: '#ddd'
+              }
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#888'
               }
             }
           },
@@ -489,7 +509,6 @@
       selectBar(index, item) {
         this.barIndex = index
         this.flow.progress = item.text
-        console.log(this.progress)
         setTimeout(() => {
           this.showMode = true
           ClientDetail.saveClientDetail(this.clientData.id, this.flow).then((res) => {
@@ -546,7 +565,6 @@
       },
       getMoreFlowList(id, flowId) {
         if (this.noMore) return
-        console.log(this.flowPage)
         ClientDetail.getFlowList(id, flowId, this.flowPage).then((res) => {
           if (res.error === ERR_OK) {
             this.flowList.push(...res.data)
@@ -597,9 +615,7 @@
         this.$router.push({path, query: {id: this.id, flowId: this.flowId}})
       },
       jumpData() {
-        console.log(22)
         let path = `${this.pageUrl}/customer-data`
-        console.log(path)
         this.$router.push({path, query: {id: this.id, flowId: this.flowId}})
       },
       jumpMessage() {
@@ -631,7 +647,7 @@
         })
       },
       getPieData() {
-        Echart.getPie(this.id).then(res => {
+        Echart.getPie(this.userInfo.merchant_id, this.employee_id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.pieData = res.data
           } else {
@@ -640,7 +656,7 @@
         })
       },
       getActionLineData() {
-        Echart.getActionLine(this.id).then(res => {
+        Echart.getActionLine(this.userInfo.merchant_id, this.employee_id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.ationLine = res.data
           } else {
@@ -649,7 +665,7 @@
         })
       },
       getBarData() {
-        Echart.getBar(this.id).then(res => {
+        Echart.getBar(this.userInfo.merchant_id, this.employee_id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.barData = res.data
           } else {
@@ -660,7 +676,8 @@
     },
     components: {
       Toast,
-      Scroll
+      Scroll,
+      Exception
     },
     computed: {
       pullUpLoadObj: function () {
@@ -669,9 +686,8 @@
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
       },
-      ...mapGetters(['ios']),
-      slide() {
-        return this.ios ? '' : 'slide'
+      userInfo() {
+        return storage.get('info')
       }
     },
     filters: {
@@ -702,6 +718,8 @@
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
 
+  .exception-box
+    padding-top: 70px
   .tab-padding
     height: 48px
 
