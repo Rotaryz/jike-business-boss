@@ -1,6 +1,11 @@
 import _this from '@/main'
 import storage from 'storage-controller'
 
+const LOSE_EFFICACY = 10000
+const NET404 = 404
+const DISABLE = 11002
+const DELETE = 1
+
 export default class utils {
   static formatDate(time) {
     let resTime = new Date(time * 1000)
@@ -40,15 +45,15 @@ export default class utils {
   // 错误码检查
   static _handleErrorType(code) {
     switch (code) {
-      case 404: {
+      case NET404: {
         _toErrorPage(`404`)
         break
       }
-      case 2: { // todo
+      case DELETE: { // todo
         _toErrorPage(`delcard`) // 名片被删除，请联系公司管理员
         break
       }
-      case 3: {
+      case DISABLE: {
         _toErrorPage(`disablecard`) // 名片被禁用，请联系公司管理员
         break
       }
@@ -69,8 +74,6 @@ export default class utils {
     return isiOS ? 'ios' : 'android'
   }
 }
-
-const LOSE_EFFICACY = 10000
 
 function _toErrorPage(useType) {
   const path = `/page-error`
