@@ -106,6 +106,7 @@
         tabActive,
         tabTurnover,
         transitionTime: 0,
+        startY: 0,
         pullUpLoad: true,
         pullUpLoadThreshold: 0,
         pullUpLoadMoreTxt: '加载更多',
@@ -128,7 +129,7 @@
         let limit = this.limit
         const data = {
           merchant_id: 0,
-          emloyee_id: 0,
+          employee_id: 0,
           page,
           limit,
           ..._data
@@ -136,9 +137,8 @@
         Rank.getStaffList(data).then(res => {
           if (res.error === ERR_OK) {
             if (res.data && res.data.length) {
-              console.log(res.data)
-              // this.dataArray.concat(res.data)
-              this.dataArray = res.data
+              let newArr = this.dataArray.concat(res.data)
+              this.dataArray = newArr
             } else {
               this.$refs.scroll.forceUpdate()
             }
@@ -154,7 +154,7 @@
         const _data = this._formatData()
         const data = {
           merchant_id: 0,
-          emloyee_id: 0,
+          employee_id: 0,
           page: 1,
           limit: LIMIT,
           ..._data
@@ -215,6 +215,7 @@
         this.tabOneIndex = index
         this.resetReqParams()
         this._rqGetStaffList()
+        this.scrollTop()
       },
       changeTabTwo(index) {
         this.transitionTime = 0.3
@@ -225,6 +226,14 @@
         tabTwo[this.tabOneIndex].idx = index
         this.resetReqParams()
         this._rqGetStaffList()
+        this.scrollTop()
+      },
+      changeGroup() {
+        this._rqGetStaffList()
+        this.scrollTop()
+      },
+      scrollTop() {
+        this.$refs.scroll.scrollTo(0, 0)
       },
       toCustomerList(item) {
         const id = item.id
@@ -237,27 +246,10 @@
         this.page = 1
         this.limit = LIMIT
       },
-      changeGroup() {
-        this._rqGetStaffList()
-      },
       onPullingUp() {
         // 更新数据 todo
         console.info('pulling up and load data')
         this._rqGetMoreStaffList()
-        // let page = ++this.page
-        // let limit = this.limit
-        // const data = {order_by: '', page, limit}
-        // Client.getCusomerList(data).then(res => {
-        //   if (res.error === ERR_OK) {
-        //     if (res.data && res.data.length) {
-        //       this.dataArray.concat(res.data)
-        //     } else {
-        //       this.$refs.scroll.forceUpdate()
-        //     }
-        //   } else {
-        //     this.$refs.toast.show(res.message)
-        //   }
-        // })
       },
       rebuildScroll() {
         this.nextTick(() => {
