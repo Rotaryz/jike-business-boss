@@ -471,6 +471,11 @@
               interval: 0,
               color: '#20202E',
               fontSize: 14
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#888'
+              }
             }
           },
           yAxis: {
@@ -480,6 +485,11 @@
               interval: 0,
               color: '#20202E',
               fontSize: 14
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#888'
+              }
             }
           },
           series: [{
