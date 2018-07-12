@@ -3,11 +3,12 @@
     <div class="client-detail">
       <div class="container">
         <scroll ref="scroll"
-                :data="list"
+                :data="actionList"
                 :probeType="probeType"
                 :bcColor="bcColor"
                 :listenScroll="listenScroll"
                 @scroll="scroll"
+                :showNoMore="false"
                 :pullUpLoad="pullUpLoadObj"
                 @pullingUp="onPullingUp">
           <div class="client-top" ref="eleven">
@@ -192,6 +193,7 @@
                     <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span
                       class="green">保存</span>了你的<span
                       class="green">电话</span>，可以考虑主动沟通</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10009">{{item.nickname}}<span class="green">保存</span>了你的<span class="green">名片海报</span></p>
                     <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span
                       class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
                     <p class="msgs-p" v-show="item.event_no * 1 === 20002">{{item.nickname}}正在<span
@@ -230,11 +232,12 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {mapActions} from 'vuex'
   import {ClientDetail, Echart} from 'api'
+  import storage from 'storage-controller'
   import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
-  import {mapActions} from 'vuex'
 
   export default {
     name: 'CapacityModel',
@@ -311,7 +314,6 @@
     created() {
       this.id = this.$route.query.id
       this.pageUrl = this.$route.query.pageUrl
-      console.log(this.pageUrl, this.id, '====')
       this.getClientId(this.id)
       this.getActionLineData()
       this.getPieData()
@@ -344,11 +346,6 @@
         let myChart = this.$echarts.init(document.getElementById('myPie'))
         // 绘制图表
         myChart.setOption({
-          // title: {
-          //   text: '客户兴趣占比',
-          //   subtext: '(每小时更新)',
-          //   x: 'center'
-          // },
           tooltip: {
             trigger: 'item',
             formatter: '{d}%'
@@ -511,7 +508,7 @@
             z: 2,
             zlevel: 100,
             style: {
-              text: '77',
+              text: this.sixData.total,
               x: 100,
               y: 100,
               textAlign: 'center',
@@ -623,7 +620,7 @@
         }, 20)
       },
       getAllDataObj(time) {
-        Echart.getAllData(time, this.id).then(res => {
+        Echart.getAllData(time, this.userInfo.merchant_id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.allDatas = res.data
           } else {
@@ -670,7 +667,6 @@
       toBusinessCard() {
         const id = this.id
         const pageUrl = `${this.pageUrl}/business-card`
-        console.log(pageUrl)
         this.$router.push({path: pageUrl, query: {id, pageUrl}})
       },
       onPullingUp() {
@@ -694,16 +690,17 @@
         })
       },
       getPieData() {
-        Echart.getPie(this.id).then(res => {
+        Echart.getPie(this.userInfo.merchant_id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.pieData = res.data
+            console.log(this.pieData, '222')
           } else {
             this.$refs.toast.show(res.message)
           }
         })
       },
       getActionLineData() {
-        Echart.getActionLine(this.id).then(res => {
+        Echart.getActionLine(this.userInfo.merchant_id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.ationLine = res.data
           } else {
@@ -712,7 +709,7 @@
         })
       },
       getBarData() {
-        Echart.getBar(this.id).then(res => {
+        Echart.getBar(this.userInfo.merchant_id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.barData = res.data
           } else {
@@ -721,7 +718,7 @@
         })
       },
       getSixData() {
-        Echart.getEmployee(this.id).then(res => {
+        Echart.getEmployee(this.userInfo.merchant_id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.sixData = res.data
             this.drawSix()
@@ -735,7 +732,7 @@
         this.tabNumber = index
       },
       getSuccessData() {
-        Echart.getSuccess(this.id).then(res => {
+        Echart.getSuccess(this.userInfo.merchant_id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.successData = res.data
           } else {
@@ -754,6 +751,9 @@
           threshold: parseInt(this.pullUpLoadThreshold),
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
+      },
+      userInfo() {
+        return storage.get('info')
       }
     },
     filters: {
@@ -938,6 +938,11 @@
       background: linear-gradient(rgba(255, 255, 255, .1) 0%, #fff 100%)
       height: 305px
       margin-bottom: 10px
+      #myPie
+        width: 100%
+        height: 305px
+        margin: 20px auto
+        padding: 20px
       #mySuccess
         width: 100%
         height: 305px

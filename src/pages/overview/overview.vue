@@ -6,7 +6,9 @@
           <div class="data-number-box">
             <img class="cliten-con-bg" src="./bg-customer_details@2x.png" alt="">
             <div class="data-tab">
-              <div class="tab"   v-for="(item, index) in tabList" v-bind:key="index" :class="tabNumber === index ? 'active' : '' " @click="getAllTab(item, index)">{{item.text}}</div>
+              <div class="tab" v-for="(item, index) in tabList" v-bind:key="index"
+                   :class="tabNumber === index ? 'active' : '' " @click="getAllTab(item, index)">{{item.text}}
+              </div>
             </div>
             <div class="data-list">
               <div class="list-box">
@@ -116,6 +118,7 @@
   import {ERR_OK} from '../../common/js/config'
   import Scroll from 'components/scroll/scroll'
   import Toast from 'components/toast/toast'
+  import storage from 'storage-controller'
 
   export default {
     name: 'my-data',
@@ -139,10 +142,10 @@
           y: []
         },
         successData: [
-          {value: 80, name: '32222'},
-          {value: 60, name: '155'},
-          {value: 40, name: '21'},
-          {value: 20, name: '0'}
+          {value: 80, name: ''},
+          {value: 60, name: ''},
+          {value: 40, name: ''},
+          {value: 20, name: ''}
         ],
         allDatas: {},
         tabList: [
@@ -167,7 +170,6 @@
       }
     },
     created() {
-      this.id = this.$route.query.id
       this.getActionLineData()
       this.getPieData()
       this.getBarData()
@@ -432,10 +434,10 @@
             data: this.successData
           }]
         })
-        myChart.on('click', this.eConsole)
+        // myChart.on('click', this.eConsole)
       },
       getPieData() {
-        Echart.getPie(this.id).then(res => {
+        Echart.getPie(this.userInfo.merchant_id, this.userInfo.id).then(res => {
           if (res.error === ERR_OK) {
             this.pieData = res.data
             this.drawPie()
@@ -445,7 +447,7 @@
         })
       },
       getActionLineData() {
-        Echart.getActionLine(this.id).then(res => {
+        Echart.getActionLine(this.userInfo.merchant_id, this.userInfo.id).then(res => {
           if (res.error === ERR_OK) {
             this.ationLine = res.data
             this.drawLine()
@@ -455,7 +457,7 @@
         })
       },
       getAddActionLineData() {
-        Echart.getAddLine(this.id).then(res => {
+        Echart.getAddLine(this.userInfo.merchant_id, this.userInfo.id).then(res => {
           if (res.error === ERR_OK) {
             this.addationLine = res.data
             this.drawAddLine()
@@ -465,7 +467,7 @@
         })
       },
       getBarData() {
-        Echart.getBar(this.id).then(res => {
+        Echart.getBar(this.userInfo.merchant_id, this.userInfo.id).then(res => {
           if (res.error === ERR_OK) {
             this.barData = res.data
             this.drawBar()
@@ -475,7 +477,7 @@
         })
       },
       getSuccessData() {
-        Echart.getSuccess(this.id).then(res => {
+        Echart.getSuccess(this.userInfo.merchant_id, this.userInfo.id, 1).then(res => {
           if (res.error === ERR_OK) {
             this.successData = res.data
             this.drawSuccess()
@@ -492,7 +494,7 @@
         }
       },
       getAllDataObj(time) {
-        Echart.getAllData(time, this.id).then(res => {
+        Echart.getAllData(time, this.userInfo.merchant_id, this.userInfo.id).then(res => {
           if (res.error === ERR_OK) {
             this.allDatas = res.data
           } else {
@@ -508,6 +510,11 @@
     components: {
       Toast,
       Scroll
+    },
+    computed: {
+      userInfo() {
+        return storage.get('info')
+      }
     }
   }
 </script>
@@ -527,6 +534,7 @@
     left: 0
     right: 0
     background-color: greenyellow
+
   .data-all
     fill-box()
     z-index: 11
