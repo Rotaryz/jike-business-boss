@@ -228,6 +228,11 @@
               lineStyle: {
                 color: '#ddd'
               }
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#888'
+              }
             }
           },
           tooltip: {
@@ -244,6 +249,11 @@
               show: true,
               lineStyle: {
                 color: '#ddd'
+              }
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#888'
               }
             }
           },
@@ -282,6 +292,11 @@
               lineStyle: {
                 color: '#ddd'
               }
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#888'
+              }
             }
           },
           tooltip: {
@@ -298,6 +313,11 @@
               show: true,
               lineStyle: {
                 color: '#ddd'
+              }
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#888'
               }
             }
           },
