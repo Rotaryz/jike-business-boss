@@ -8,6 +8,7 @@ import live from './live'
 import clientDetail from './clientDetail'
 import goods from './goods'
 import echart from './echart'
+import rank from './rank'
 
 // 授权模块
 export const Jwt = jwt
@@ -35,3 +36,6 @@ export const Goods = goods
 
 // 图表
 export const Echart = echart
+
+// 排行榜
+export const Rank = rank

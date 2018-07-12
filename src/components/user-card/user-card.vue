@@ -52,13 +52,13 @@
       <div class="rank two" v-else-if="idx===1"></div>
       <div class="rank three" v-else-if="idx===2"></div>
       <div class="rank" v-else>{{idx+1}}</div>
-      <img class="user-logo" :src="cardInfo.image_url" alt="">
+      <img class="user-logo" :src="cardInfo.avatar" alt="">
       <section class="user-info-ranking">
         <div class="info-box-ranking">
           <div class="name">{{cardInfo.name}}</div>
-          <div class="txt">{{cardInfo.conversion_rate}}</div>
+          <div class="txt">{{cardInfo.position}}</div>
         </div>
-        <div class="rank-number">{{96}}</div>
+        <div class="rank-number">{{cardInfo.number}}</div>
       </section>
     </div>
   </article>
@@ -107,6 +107,7 @@
       .user-logo
         width: 45px
         height: 45px
+        margin-left: 3px
         margin-right: 15px
       .user-info
         layout()
@@ -152,5 +153,5 @@
           font-family: DINCondensed-Bold
           font-size: 30px
           color: $color-20202E
-          padding-top :5px
+          padding-top: 5px
 </style>

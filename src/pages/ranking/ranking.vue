@@ -79,9 +79,9 @@
 <script type="text/ecmascript-6">
   import UserCard from 'components/user-card/user-card'
   import Scroll from 'components/scroll/scroll'
-  import {Client} from 'api'
+  import {Rank} from 'api'
   import Toast from 'components/toast/toast'
-  import {ERR_OK} from '../../common/js/config'
+  import {ERR_OK} from 'common/js/config'
   import ActionSheet from 'components/action-sheet/action-sheet'
   import Exception from 'components/exception/exception'
 
@@ -90,8 +90,8 @@
   const tabCustomer = {data: ['客户总数', '新增客户'], idx: 0}
   const tabActive = {data: ['跟进客户数', '咨询客户数'], idx: 0}
   const tabTurnover = {data: ['0-50%', '51-80%', '81-99%', '100%'], idx: 0}
-  const tabTwo = [tabCustomer, tabActive, tabTurnover]
   const groupList = {data: ['昨天', '近7天', '近30天'], idx: 0}
+  const tabTwo = [tabCustomer, tabActive, tabTurnover]
   export default {
     name: 'Ranking',
     data() {
@@ -114,7 +114,7 @@
     },
     created() {
       this.$emit('tabChange', 2)
-      this.getCustomerList()
+      this._rqGetStaffList()
     },
     methods: {
       refresh() {
@@ -122,28 +122,109 @@
           console.info('rank refresh')
         }, 300)
       },
-      getCustomerList() {
-        const data = {order_by: '', page: 1, limit: LIMIT}
-        Client.getCusomerList(data).then(res => {
+      _rqGetMoreStaffList() {
+        const _data = this._formatData()
+        let page = ++this.page
+        let limit = this.limit
+        const data = {
+          merchant_id: 0,
+          emloyee_id: 0,
+          page,
+          limit,
+          ..._data
+        }
+        Rank.getStaffList(data).then(res => {
           if (res.error === ERR_OK) {
-            this.dataArray = [...res.data, ...res.data, ...res.data]
+            if (res.data && res.data.length) {
+              console.log(res.data)
+              // this.dataArray.concat(res.data)
+              this.dataArray = res.data
+            } else {
+              this.$refs.scroll.forceUpdate()
+            }
           } else {
             this.$refs.toast.show(res.message)
           }
         })
       },
+      _rqGetStaffList() {
+        // tab类型 1：按客户数，2：跟进客户数，3：咨询客户数，4：按成交率 - 1
+        // 事件类型： all yesterday week month - all
+        // 成功率类型 1： 0~50% 2：51%~80% 3：81~99%，4：100% - 0
+        const _data = this._formatData()
+        const data = {
+          merchant_id: 0,
+          emloyee_id: 0,
+          page: 1,
+          limit: LIMIT,
+          ..._data
+        }
+        Rank.getStaffList(data).then(res => {
+          if (res.error === ERR_OK) {
+            this.dataArray = res.data
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      // 配置请求的参数
+      _formatData() {
+        const data = {}
+        switch (this.tabOneIndex) {
+          case 0 : {
+            data.type = 1
+            data.rate_type = 0 // 默认值
+            if (this.tabCustomer.idx) {
+              switch (groupList.idx) {
+                case 0 : {
+                  data.time = 'yesterday'
+                  break
+                }
+                case 1: {
+                  data.time = 'week'
+                  break
+                }
+                case 2: {
+                  data.time = 'month'
+                  break
+                }
+                default :
+                  break
+              }
+            } else {
+              data.time = 'all'
+            }
+            break
+          }
+          case 1 : {
+            data.type = this.tabActive.idx ? 3 : 2
+            data.rate_type = 0 // 默认值
+            data.time = 'all' // 默认值
+            break
+          }
+          case 2 : {
+            data.type = 1 // 默认值
+            data.time = 'all' // 默认值
+            data.rate_type = this.tabTurnover.idx + 1
+          }
+        }
+        return data
+      },
       changeTabOne(index) {
         this.transitionTime = 0
         this.tabOneIndex = index
         this.resetReqParams()
+        this._rqGetStaffList()
       },
       changeTabTwo(index) {
         this.transitionTime = 0.3
         if (this.tabOneIndex === 0 && index === 1 && tabTwo[this.tabOneIndex].idx === index) {
           this.$refs.sheet.show()
+          return
         }
         tabTwo[this.tabOneIndex].idx = index
         this.resetReqParams()
+        this._rqGetStaffList()
       },
       toCustomerList(item) {
         const id = item.id
@@ -157,25 +238,26 @@
         this.limit = LIMIT
       },
       changeGroup() {
-        console.log(1)
+        this._rqGetStaffList()
       },
       onPullingUp() {
         // 更新数据 todo
         console.info('pulling up and load data')
-        let page = ++this.page
-        let limit = this.limit
-        const data = {order_by: '', page, limit}
-        Client.getCusomerList(data).then(res => {
-          if (res.error === ERR_OK) {
-            if (res.data && res.data.length) {
-              this.dataArray.concat(res.data)
-            } else {
-              this.$refs.scroll.forceUpdate()
-            }
-          } else {
-            this.$refs.toast.show(res.message)
-          }
-        })
+        this._rqGetMoreStaffList()
+        // let page = ++this.page
+        // let limit = this.limit
+        // const data = {order_by: '', page, limit}
+        // Client.getCusomerList(data).then(res => {
+        //   if (res.error === ERR_OK) {
+        //     if (res.data && res.data.length) {
+        //       this.dataArray.concat(res.data)
+        //     } else {
+        //       this.$refs.scroll.forceUpdate()
+        //     }
+        //   } else {
+        //     this.$refs.toast.show(res.message)
+        //   }
+        // })
       },
       rebuildScroll() {
         this.nextTick(() => {
