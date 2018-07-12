@@ -1,7 +1,7 @@
 'use strict'
 
 import axios from 'axios'
-import { BASE_URL } from './config'
+import {BASE_URL} from './config'
 import storage from 'storage-controller'
 import utils from './utils'
 
@@ -9,9 +9,15 @@ const TIME_OUT = 10000
 const ERR_OK = 0
 const ERR_NO = -404
 
+const COMMON_HEADER = {
+  Radar: 'boss'
+}
+
 const http = axios.create({
   timeout: TIME_OUT
 })
+
+http.defaults.headers = COMMON_HEADER
 
 http.defaults.baseURL = BASE_URL.api
 
@@ -28,7 +34,7 @@ http.interceptors.response.use(response => {
   return Promise.resolve(error.response)
 })
 
-function checkStatus (response) {
+function checkStatus(response) {
   // loading
   // 如果http状态码正常，则直接返回数据
   if (response && (response.status === 200 || response.status === 304 || response.status === 422)) {
@@ -42,7 +48,7 @@ function checkStatus (response) {
   }
 }
 
-function checkCode (res) {
+function checkCode(res) {
   // 如果code异常(这里已经包括网络错误，服务器错误，后端抛出的错误)，可以弹出一个错误提示，告诉用户
   if (res.status === ERR_NO) {
     console.warn(res.msg)
@@ -56,7 +62,7 @@ function checkCode (res) {
   return res.data
 }
 
-function requestException (res) {
+function requestException(res) {
   const error = {}
   error.statusCode = res.status
   const serviceData = res.data
@@ -70,14 +76,13 @@ function requestException (res) {
 }
 
 export default {
-  post (url, data) {
+  post(url, data) {
     return http({
       method: 'post',
       url,
       data, // post 请求时带的参数
       headers: {
-        Authorization: storage.get('token'),
-        Radar: 'boss'
+        Authorization: storage.get('token')
       }
     }).then((response) => {
       return checkStatus(response)
@@ -85,14 +90,13 @@ export default {
       return checkCode(res)
     })
   },
-  get (url, params) {
+  get(url, params) {
     return http({
       method: 'get',
       url,
       params, // get 请求时带的参数
       headers: {
-        Authorization: storage.get('token'),
-        Radar: 'boss'
+        Authorization: storage.get('token')
       }
     }).then((response) => {
       return checkStatus(response)
@@ -100,14 +104,13 @@ export default {
       return checkCode(res)
     })
   },
-  put (url, data) {
+  put(url, data) {
     return http({
       method: 'put',
       url,
       data, // put 请求时带的参数
       headers: {
-        Authorization: storage.get('token'),
-        Radar: 'boss'
+        Authorization: storage.get('token')
       }
     }).then((response) => {
       return checkStatus(response)
@@ -115,14 +118,13 @@ export default {
       return checkCode(res)
     })
   },
-  delete (url, data) {
+  delete(url, data) {
     return http({
       method: 'delete',
       url,
       data, // put 请求时带的参数
       headers: {
-        Authorization: storage.get('token'),
-        Radar: 'boss'
+        Authorization: storage.get('token')
       }
     }).then((response) => {
       return checkStatus(response)
