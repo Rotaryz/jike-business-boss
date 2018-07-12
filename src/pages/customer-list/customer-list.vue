@@ -18,7 +18,7 @@
           </scroll>
         </section>
       </div>
-      <section class="exception-box" v-else>
+      <section class="exception-box" v-if="isEmpty">
         <exception errType="customer"></exception>
       </section>
       <toast ref="toast"></toast>
@@ -49,6 +49,7 @@
       return {
         progress: 0,
         dataArray: [],
+        isEmpty: false,
         page: 1,
         limit: LIMIT,
         pullUpLoad: true,
@@ -87,6 +88,7 @@
         Client.getCusomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = [...res.data, ...res.data, ...res.data]
+            this.isEmpty = !this.dataArray.length
           } else {
             this.$refs.toast.show(res.message)
           }
