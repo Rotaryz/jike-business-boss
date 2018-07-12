@@ -137,21 +137,7 @@ const route = new Router({
       path: '/customer-data',
       component: CustomerData,
       meta: {
-        title: '客户详情'
-      }
-    },
-    {
-      path: '/capacity-model',
-      component: CapacityModel,
-      meta: {
-        title: '能力模型'
-      }
-    },
-    {
-      path: '/business-card',
-      component: BusinessCard,
-      meta: {
-        title: '名片'
+        title: '客户资料'
       }
     }
   ]
