@@ -91,5 +91,17 @@ export default {
       emloyee_id
     }
     return request.post(url, data)
+  },
+  /**
+   * 数据总览
+   * @returns {*}
+   */
+  getEmployeeRank(merchant_id = 0, emloyee_id = 0) {
+    let url = 'api/employee/all-type-rank'
+    let data = {
+      merchant_id,
+      emloyee_id
+    }
+    return request.post(url, data)
   }
 }

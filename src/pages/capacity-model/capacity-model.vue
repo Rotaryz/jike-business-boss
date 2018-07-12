@@ -55,11 +55,31 @@
             <div class="six-title">
               <div class="six-top">
                 <div class="left">销售力综合排名</div>
-                <div class="right">3</div>
+                <div class="right">{{dataRank.sales_force}}</div>
               </div>
               <div class="six-bottom">
-                <div class="left">销售力综合排名</div>
-                <div class="right">3</div>
+                <div class="left">获客能力排名</div>
+                <div class="right">{{dataRank.customer_competence}}</div>
+              </div>
+              <div class="six-bottom">
+                <div class="left">个人魅力排名</div>
+                <div class="right">{{dataRank.personal_charm}}</div>
+              </div>
+              <div class="six-bottom">
+                <div class="left">客户互动力排名</div>
+                <div class="right">{{dataRank.customer_interaction}}</div>
+              </div>
+              <div class="six-bottom">
+                <div class="left">产品推广</div>
+                <div class="right">{{dataRank.product_drive}}</div>
+              </div>
+              <div class="six-bottom">
+                <div class="left">官网推广力排名</div>
+                <div class="right">{{dataRank.customer_followup}}</div>
+              </div>
+              <div class="six-bottom">
+                <div class="left">客户跟进力排名</div>
+                <div class="right">{{dataRank.website_seo}}</div>
               </div>
             </div>
           </div>
@@ -308,7 +328,8 @@
         sixData: {},
         showTab: false,
         allDatas: {},
-        successData: []
+        successData: [],
+        dataRank: {}
       }
     },
     created() {
@@ -322,6 +343,7 @@
       this.getSuccessData()
       this.getAllDataObj('all')
       this.getNewActionList(this.id)
+      this.getDataRank()
     },
     mounted() {
       this.highgt = this.$refs.eleven.offsetHeight
@@ -713,7 +735,6 @@
         Echart.getPie(this.userInfo.merchant_id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.pieData = res.data
-            console.log(this.pieData, '222')
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -755,6 +776,15 @@
         Echart.getSuccess(this.userInfo.merchant_id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.successData = res.data
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      getDataRank() {
+        Echart.getEmployeeRank(this.userInfo.merchant_id, this.id).then(res => {
+          if (res.error === ERR_OK) {
+            this.dataRank = res.data
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -1125,6 +1155,7 @@
       height: 45px
       line-height: 45px
       border-bottom: 0.5px solid rgba(0,0,0,.1)
+      padding-right: 5px
       .left
         font-size: $font-size-16
         color: #20202e
@@ -1139,6 +1170,7 @@
       height: 45px
       line-height: 45px
       border-bottom: 0.5px solid rgba(0,0,0,.1)
+      padding-right: 5px
       .left
         font-size: $font-size-14
         color: $color-text-88
