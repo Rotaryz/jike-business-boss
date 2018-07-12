@@ -8,7 +8,7 @@
   import storage from 'storage-controller'
   import {ERR_OK} from 'common/js/config'
 
-  const NORMAL_ROUTE = '/radar'
+  const NORMAL_ROUTE = '/overview'
   const COMPONENT_NAME = 'Oauth'
   const oauth = new Oauth()
 

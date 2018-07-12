@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// const HelloWorld = () => import('pages/hello-world/hello-world')
 const Oauth = () => import('pages/oauth/oauth')
 const Overview = () => import('pages/overview/overview')
 const Ranking = () => import('pages/ranking/ranking')
