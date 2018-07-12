@@ -148,7 +148,9 @@
       toCustomerList(item) {
         const id = item.id
         const pageUrl = `/ranking/customer-list`
-        this.$router.push({path: pageUrl, query: {id, pageUrl}})
+        const useType = 'rank-customer-list' // 排行客户列表
+        const progress = 100
+        this.$router.push({path: pageUrl, query: {id, pageUrl, useType, progress}})
       },
       resetReqParams() {
         this.page = 1

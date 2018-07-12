@@ -1,6 +1,6 @@
 <template>
   <article class="user-card">
-    <!--ai分析-->
+    <!--ai分析 员工列表-->
     <div class="card-box" v-if="useType === 'ai'">
       <div class="rank one" v-if="idx===0"></div>
       <div class="rank two" v-else-if="idx===1"></div>
@@ -18,7 +18,7 @@
         </div>
       </section>
     </div>
-    <!--overview总览-->
+    <!--overview总览 客户列表-->
     <div class="card-box" v-if="useType === 'overview'">
       <img class="user-logo" :src="cardInfo.image_url" alt="">
       <section class="user-info">
@@ -32,8 +32,8 @@
         </div>
       </section>
     </div>
-    <!--rank-list-->
-    <div class="card-box" v-if="useType === 'rank-list'">
+    <!--rank-list 排行客户工列表-->
+    <div class="card-box" v-if="useType === 'rank-customer-list'">
       <img class="user-logo" :src="cardInfo.image_url" alt="">
       <section class="user-info">
         <div class="info-box">
@@ -46,7 +46,7 @@
         </div>
       </section>
     </div>
-    <!--ranking-->
+    <!--ranking 排行榜员工列表-->
     <div class="card-box" v-if="useType === 'ranking'">
       <div class="rank one" v-if="idx===0"></div>
       <div class="rank two" v-else-if="idx===1"></div>

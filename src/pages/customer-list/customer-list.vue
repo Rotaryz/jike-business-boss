@@ -3,7 +3,7 @@
     <article class="customer-list">
       <div v-if="dataArray.length">
         <div class="progress" :style="progressStyle"></div>
-        <div class="title">{{title}}</div>
+        <div class="title">{{titleTxt}}</div>
         <div class="info-bar">全部 {{dataArray.length}} 位</div>
         <section class="content">
           <scroll ref="scroll"
@@ -13,7 +13,7 @@
                   @pullingUp="onPullingUp"
           >
             <div class="user-card-box" v-for="(item,index) in dataArray" :key="index" @click="toCustomerDetail">
-              <user-card :cardInfo="item" :idx="index" useType="rank-list"></user-card>
+              <user-card :cardInfo="item" :idx="index" :useType="useType"></user-card>
             </div>
           </scroll>
         </section>
@@ -36,14 +36,18 @@
   import Exception from 'components/exception/exception'
   import {mapGetters} from 'vuex'
 
-  const progressColor = ['#57BA15', '#F9B43C', '#F9863C', '#F9543D']
+  const progressInfo = [
+    ['#57BA15', `预计成交率0-50%`],
+    ['#F9B43C', `预计成交率51-80%`],
+    ['#F9863C', `预计成交率81-99%`],
+    ['#F9543D', `预计成交率100%`]
+  ]
   const LIMIT = 10
   export default {
     name: 'CustomerList',
     data() {
       return {
         progress: 0,
-        title: `预计成交率0-50%`,
         dataArray: [],
         page: 1,
         limit: LIMIT,
@@ -52,15 +56,22 @@
         pullUpLoadMoreTxt: '加载更多',
         pullUpLoadNoMoreTxt: '没有更多了',
         pageUrl: '', // 父级路由
-        customerId: '' // 员工ID
+        parentId: '', // 父级的ID
+        useType: 'overview' // 排行榜客户
       }
     },
     created() {
+      this._getParams()
       this.getCustomerList()
-      this.customerId = this.$route.query.id
-      this.pageUrl = this.$route.query.pageUrl
     },
     methods: {
+      _getParams() {
+        this.parentId = this.$route.query.id
+        this.pageUrl = this.$route.query.pageUrl
+        this.progress = this.$route.query.progress || 0
+        const useType = this.$route.query.useType
+        useType && (this.useType = useType)
+      },
       toCustomerDetail(item) {
         const id = item.id
         const pageUrl = this.pageUrl + `/customer-detail`
@@ -75,7 +86,7 @@
         const data = {order_by: '', page: 1, limit: LIMIT}
         Client.getCusomerList(data).then(res => {
           if (res.error === ERR_OK) {
-            // this.dataArray = [...res.data, ...res.data, ...res.data]
+            this.dataArray = [...res.data, ...res.data, ...res.data]
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -115,18 +126,20 @@
       }
     },
     computed: {
+      titleTxt() {
+        const index = this.progressIndex
+        return progressInfo[index][1]
+      },
+      progressIndex() {
+        const progress = this.progress * 1
+        if (Math.max(progress, 50) <= 50) return 0
+        if (Math.max(progress, 80) <= 80) return 1
+        if (Math.max(progress, 99) <= 99) return 2
+        return 3
+      },
       progressStyle() {
-        let index = 0
-        if (this.progress <= 50) {
-          index = 0
-        } else if (this.progress <= 80) {
-          index = 1
-        } else if (this.progress <= 99) {
-          index = 2
-        } else {
-          index = 3
-        }
-        return `background-color:${progressColor[index]}`
+        const index = this.progressIndex
+        return `background-color:${progressInfo[index][0]}`
       },
       pullUpLoadObj: function () {
         return this.pullUpLoad ? {
