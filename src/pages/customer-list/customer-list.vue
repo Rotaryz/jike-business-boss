@@ -57,13 +57,23 @@
         pullUpLoadNoMoreTxt: '没有更多了',
         pageUrl: '', // 父级路由
         parentId: '', // 父级的ID
-        useType: 'overview' // 排行榜客户
+        useType: 'overview', // 排行榜客户
+        isAll: false
       }
     },
     created() {
       this._getParams()
     },
     methods: {
+      refresh() {
+        this.resetReqParams()
+        // this._rqGetStaffSellList()
+      },
+      resetReqParams() {
+        this.page = 1
+        this.limit = LIMIT
+        this.isAll = false
+      },
       _getParams() {
         this.parentId = this.$route.query.id
         this.pageUrl = this.$route.query.pageUrl
@@ -75,11 +85,6 @@
         const id = item.id
         const pageUrl = this.pageUrl + `/customer-detail`
         this.$router.push({path: pageUrl, query: {id, pageUrl}})
-      },
-      refresh() {
-        setTimeout(() => {
-          console.info('list refresh')
-        }, 300)
       },
       getCustomerList() {
         // const data = {order_by: '', page: 1, limit: LIMIT}

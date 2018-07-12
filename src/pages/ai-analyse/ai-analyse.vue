@@ -38,7 +38,8 @@
         pullUpLoad: true,
         pullUpLoadThreshold: 0,
         pullUpLoadMoreTxt: '加载更多',
-        pullUpLoadNoMoreTxt: '没有更多了'
+        pullUpLoadNoMoreTxt: '没有更多了',
+        isAll: false
       }
     },
     created() {
@@ -47,9 +48,13 @@
     },
     methods: {
       refresh() {
-        setTimeout(() => {
-          console.info('rank refresh')
-        }, 300)
+        this.resetReqParams()
+        this._rqGetStaffSellList()
+      },
+      resetReqParams() {
+        this.page = 1
+        this.limit = LIMIT
+        this.isAll = false
       },
       toCapacityModel(item) {
         const id = item.employee_id
@@ -70,6 +75,8 @@
       },
       onPullingUp() {
         // 更新数据 todo
+        if (!this.pullUpLoad) return
+        if (this.isAll) return this.$refs.scroll.forceUpdate()
         console.info('pulling up and load data')
         let page = ++this.page
         let limit = this.limit
@@ -81,6 +88,7 @@
               this.dataArray = newArr
             } else {
               this.$refs.scroll.forceUpdate()
+              this.isAll = true
             }
           } else {
             this.$refs.toast.show(res.message)
@@ -97,6 +105,7 @@
     watch: {
       pullUpLoadObj: {
         handler() {
+          if (!this.pullUpLoad) return
           this.rebuildScroll()
         },
         deep: true

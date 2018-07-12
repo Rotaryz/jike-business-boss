@@ -121,12 +121,12 @@
     },
     methods: {
       refresh() {
-        setTimeout(() => {
-          console.info('rank refresh')
-        }, 300)
+        this.resetReqParams()
+        this._rqGetStaffList()
       },
       _rqGetMoreStaffList() {
-        console.log(222)
+        if (!this.pullUpLoad) return
+        if (this.isAll) return this.$refs.scroll.forceUpdate()
         const _data = this._formatData()
         let page = ++this.page
         let limit = this.limit
@@ -155,7 +155,6 @@
         // tab类型 1：按客户数，2：跟进客户数，3：咨询客户数，4：按成交率 - 1
         // 事件类型： all yesterday week month - all
         // 成功率类型 1： 0~50% 2：51%~80% 3：81~99%，4：100% - 0
-        this.isAll = true
         const _data = this._formatData()
         const data = {
           merchant_id: 0,
@@ -239,7 +238,7 @@
         this.scrollTop()
       },
       scrollTop() {
-        this.$refs.scroll.scrollTo(0, 0)
+        this.$refs.scroll && this.$refs.scroll.scrollTo(0, 0)
       },
       toCustomerList(item) {
         // todo
@@ -252,6 +251,7 @@
       resetReqParams() {
         this.page = 1
         this.limit = LIMIT
+        this.isAll = false
       },
       onPullingUp() {
         // 更新数据
@@ -269,6 +269,7 @@
     watch: {
       pullUpLoadObj: {
         handler() {
+          if (!this.pullUpLoad) return
           this.rebuildScroll()
         },
         deep: true
