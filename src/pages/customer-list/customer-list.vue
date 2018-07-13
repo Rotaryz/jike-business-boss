@@ -31,9 +31,10 @@
   import UserCard from 'components/user-card/user-card'
   import Scroll from 'components/scroll/scroll'
   import Toast from 'components/toast/toast'
-  // import {ERR_OK} from '../../common/js/config'
+  import {ERR_OK} from 'common/js/config'
   import Exception from 'components/exception/exception'
   import {mapGetters} from 'vuex'
+  import {Rank} from 'api'
 
   const progressInfo = [
     ['#57BA15', `预计成交率0-50%`],
@@ -63,11 +64,12 @@
     },
     created() {
       this._getParams()
+      this._rqGetStaffList()
     },
     methods: {
       refresh() {
         this.resetReqParams()
-        // this._rqGetStaffSellList()
+        this._rqGetStaffList()
       },
       resetReqParams() {
         this.page = 1
@@ -78,6 +80,7 @@
         this.parentId = this.$route.query.id
         this.pageUrl = this.$route.query.pageUrl
         this.progress = this.$route.query.progress || 0
+        console.log(this.progress)
         const useType = this.$route.query.useType
         useType && (this.useType = useType)
       },
@@ -86,16 +89,24 @@
         const pageUrl = this.pageUrl + `/customer-detail`
         this.$router.push({path: pageUrl, query: {id, pageUrl}})
       },
-      getCustomerList() {
-        // const data = {order_by: '', page: 1, limit: LIMIT}
-        // Client.getCusomerList(data).then(res => {、
-        //   if (res.error === ERR_OK) {
-        //     this.dataArray = [...res.data, ...res.data, ...res.data]
-        //     this.isEmpty = !this.dataArray.length
-        //   } else {
-        //     this.$refs.toast.show(res.message)
-        //   }
-        // })
+      _rqGetStaffList() {
+        // tab类型 1：按客户数，2：跟进客户数，3：咨询客户数，4：按成交率 - 1
+        // 事件类型： all yesterday week month - all
+        // 成功率类型 1： 0~50% 2：51%~80% 3：81~99%，4：100% - 0
+        const data = {
+          merchant_id: 0,
+          employee_id: 0,
+          page: 1,
+          limit: LIMIT
+        }
+        Rank.getStaffList(data).then(res => {
+          if (res.error === ERR_OK) {
+            this.dataArray = res.data
+            this.isEmpty = !this.dataArray.length
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
       },
       onPullingUp() {
         // 更新数据 todo

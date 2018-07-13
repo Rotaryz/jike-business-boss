@@ -110,6 +110,7 @@
       </div>
     </scroll>
     <toast ref="toast"></toast>
+    <router-view></router-view>
   </article>
 </template>
 
@@ -142,10 +143,10 @@
           y: []
         },
         successData: [
-          {value: 80, name: ''},
-          {value: 60, name: ''},
-          {value: 40, name: ''},
-          {value: 20, name: ''}
+          {value: 80, name: ' 3 ', text: '3'},
+          {value: 60, name: '  2  ', text: '2'},
+          {value: 40, name: '   2   ', text: '2'},
+          {value: 20, name: '    0    ', text: '0'}
         ],
         allDatas: {},
         tabList: [
@@ -517,10 +518,12 @@
         })
       },
       eConsole(param) {
-        if (param.name > 0) {
-          const id = param.name
-          const pathUrl = `/overview/customer-list`
-          this.$router.push({path: pathUrl, query: {id, pathUrl}})
+        console.log(param.data.text)
+        if (param.data.text > 0) {
+          const progress = param.value // id为80则分组0-50,60则分组51-80,40则分组81-99,20则分组100
+          const useType = 'overview'
+          const pageUrl = `/overview/customer-list`
+          this.$router.push({path: pageUrl, query: {pageUrl, useType, progress}})
         }
       },
       getAllDataObj(time) {

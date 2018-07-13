@@ -182,7 +182,7 @@
             </div>
           </div>
           <div class="visitor-box" v-if="menuIdx * 1 === 2">
-            <div class="box-list">
+            <div class="box-list" v-if="actionList.length * 1 !== 0">
               <div class="msgs-item" v-for="(item, index) in actionList" :key="index">
                 <img :src="item.image_url" class="msgs-left">
                 <div class="msgs-right">
@@ -236,6 +236,9 @@
                 </div>
               </div>
             </div>
+            <section class="exception-box" v-if="actionList.length * 1 === 0">
+              <exception errType="nodata"></exception>
+            </section>
           </div>
         </scroll>
       </div>
@@ -258,6 +261,7 @@
   import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
+  import Exception from 'components/exception/exception'
 
   export default {
     name: 'CapacityModel',
@@ -793,7 +797,8 @@
     },
     components: {
       Toast,
-      Scroll
+      Scroll,
+      Exception
     },
     computed: {
       pullUpLoadObj: function () {
@@ -833,6 +838,9 @@
     box-sizing: border-box
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
+
+  .exception-box
+    padding-top: 70px
 
   .client-detail
     fill-box()
