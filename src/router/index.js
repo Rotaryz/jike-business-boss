@@ -19,10 +19,6 @@ const route = new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
-      redirect: '/oauth'
-    },
-    {
       path: '/oauth',
       component: Oauth
     },
