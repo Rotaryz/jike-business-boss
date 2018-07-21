@@ -677,6 +677,7 @@
       getClientId(id) {
         ClientDetail.getClientDetail(id).then((res) => {
           if (res.error === ERR_OK) {
+            console.log(2)
             this.clientData = res.data
             this.flow = res.data.flow
             if (this.flow.real_name.length * 1 === 0) {

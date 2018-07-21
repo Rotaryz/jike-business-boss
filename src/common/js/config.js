@@ -4,8 +4,11 @@ const LOCAL_URL = {
   api: 'http://zantui-api.com'
 }
 
+// const DEV_URL = {
+//   api: 'http://business-api.jerryf.cn'
+// }
 const DEV_URL = {
-  api: 'http://business-api.jerryf.cn'
+  api: 'https://business-api.jkweixin.net'
 }
 
 const TEST_URL = {
