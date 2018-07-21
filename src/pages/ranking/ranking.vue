@@ -381,8 +381,11 @@
               width: 30px
               background-color: $color-20202E
     .content
-      position :relative
-      flex: 1
+      position :position
+      top: 139px
+      left :0
+      right :0
+      bottom : 0
       overflow: hidden
       .user-card-box
         height: 75px
