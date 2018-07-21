@@ -381,8 +381,8 @@
               width: 30px
               background-color: $color-20202E
     .content
-      position :position
-      top: 139px
+      position :absolute
+      top: 250px
       left :0
       right :0
       bottom : 0
