@@ -10,10 +10,10 @@
       <section class="user-info">
         <div class="info-box">
           <div class="name">{{cardInfo.name}}</div>
-          <div class="name">{{cardInfo.position}}</div>
+          <div class="sale-power">{{cardInfo.number}}</div>
         </div>
         <div class="info-box">
-          <div class="number">{{cardInfo.number}}</div>
+          <div class="number">{{cardInfo.position}}</div>
           <div class="number">销售力</div>
         </div>
       </section>
@@ -121,6 +121,13 @@
           color: $color-20202E
           layout(row, block, nowrap)
           justify-content: space-between
+          .name
+            font-size: $font-size-16
+            color: $color-20202E
+            font-family: $font-family-regular
+          .sale-power
+            font-size: $font-size-20
+            font-family: $font-family-bold
           .number
             font-size: $font-size-12
             color: $color-888888
