@@ -508,7 +508,7 @@
         })
       },
       getSuccessData() {
-        Echart.getSuccess(this.userInfo.merchant_id, 1).then(res => {
+        Echart.getSuccess(this.userInfo.merchant_id).then(res => {
           if (res.error === ERR_OK) {
             this.successData = res.data
             this.drawSuccess()
