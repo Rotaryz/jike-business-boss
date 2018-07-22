@@ -6,7 +6,7 @@ export default {
    * @returns {*}
    */
   getPie(merchant_id = 0, employee_id = 0, customer_id = 0) {
-    let url = 'api/employee/interest-rate-chart'
+    let url = 'api/merchant/boss-interest-rate-chart'
     let data = {
       customer_id,
       merchant_id,
@@ -19,7 +19,7 @@ export default {
    * @returns {*}
    */
   getActionLine(merchant_id = 0, employee_id = 0, customer_id = 0) {
-    let url = 'api/employee/active-chart'
+    let url = 'api/merchant/boss-active-chart'
     let data = {
       customer_id,
       merchant_id,
@@ -32,7 +32,7 @@ export default {
    * @returns {*}
    */
   getAddLine(merchant_id = 0, employee_id = 0, customer_id = 0) {
-    let url = 'api/employee/new-customer-sum-chart'
+    let url = 'api/merchant/boss-new-customer-sum-chart'
     let data = {
       customer_id,
       merchant_id,
@@ -45,7 +45,7 @@ export default {
    * @returns {*}
    */
   getSuccess(merchant_id = 0, employee_id = 0, is_boss = 0) {
-    let url = 'api/employee/close-deal-rate-chart'
+    let url = 'api/merchant/boss-close-deal-rate-chart'
     let data = {
       is_boss,
       merchant_id,
@@ -58,7 +58,7 @@ export default {
    * @returns {*}
    */
   getBar(merchant_id = 0, employee_id = 0, customer_id = 0) {
-    let url = 'api/employee/interactive-chart'
+    let url = 'api/merchant/boss-interactive-chart'
     let data = {
       customer_id,
       merchant_id,
@@ -71,7 +71,7 @@ export default {
    * @returns {*}
    */
   getEmployee(merchant_id = 0, employee_id = 0, customer_id = 0) {
-    let url = 'api/employee/capacity-model-chart'
+    let url = 'api/merchant/boss-capacity-model-chart'
     let data = {
       customer_id,
       merchant_id,
@@ -84,7 +84,7 @@ export default {
    * @returns {*}
    */
   getAllData(time = 'all', merchant_id = 0, employee_id = 0) {
-    let url = 'api/employee/data_overview'
+    let url = 'api/merchant/boss-data-overview'
     let data = {
       time,
       merchant_id,
@@ -97,7 +97,7 @@ export default {
    * @returns {*}
    */
   getEmployeeRank(merchant_id = 0, employee_id = 0) {
-    let url = 'api/employee/all-type-rank'
+    let url = 'api/merchant/boss-all-type-rank'
     let data = {
       merchant_id,
       employee_id
