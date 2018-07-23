@@ -222,12 +222,12 @@
                       <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span
                         class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
                       <p class="msgs-p" v-show="item.event_no * 1 === 20002">{{item.nickname}}正在<span
-                        class="green">查看</span><span class="green">{{item.name | titleCut}}</span>，可能对该产品感兴趣</p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 20003">{{item.nickname}}正在对<span class="green">{{item.name | titleCut}}</span>向你<span
+                        class="green">查看</span><span class="green">{{item.title | titleCut}}</span>，可能对该产品感兴趣</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 20003">{{item.nickname}}正在对<span class="green">{{item.title | titleCut}}</span>向你<span
                         class="green">咨询</span>，请做好准备应答</p>
                       <p class="msgs-p" v-show="item.event_no * 1 === 20004">{{item.nickname}}<span
                         class="green">转发</span>了<span
-                        class="green">{{item.name | titleCut}}</span>，可能在咨询他人建议</p>
+                        class="green">{{item.title | titleCut}}</span>，可能在咨询他人建议</p>
                       <p class="msgs-p" v-show="item.event_no * 1 === 30001">{{item.nickname}}正在<span
                         class="green">查看</span>你发布的<span class="green">动态</span>第{{item.count_sum}}次</p>
                       <p class="msgs-p" v-show="item.event_no * 1 === 30002">{{item.nickname}}给你发布的动态<span
@@ -821,7 +821,7 @@
     },
     filters: {
       titleCut(val) {
-        if (val.length > 8) {
+        if (val && val.length > 8) {
           return val.slice(0, 8) + '···'
         } else {
           return val
