@@ -15,7 +15,8 @@
                     <div class="label-right">
                       <div class="label-name">{{flow.nickname}}</div>
                       <div class="add-text">
-                        {{flow.sources}}
+                        <div class="text">{{flow.created_at}}</div>
+                        <div class="text">{{flow.sources}}</div>
                       </div>
                     </div>
                   </div>
@@ -273,16 +274,23 @@
                 display: block
             .label-right
               margin-left: 10px
+              overflow: hidden
+              flex: 1
               .label-name
                 font-size: $font-size-medium-x
                 color: $color-text
                 font-family: $font-family-meddle
                 padding-top: 5px
                 margin-bottom: 15px
+                overflow: hidden
               .add-text
-                font-size: $font-size-small
-                color: $color-text-88
-                font-family: $font-family-meddle
+                layout(row)
+                no-wrap()
+                .text
+                  font-size: $font-size-small
+                  color: $color-text-88
+                  font-family: $font-family-regular
+                  margin-right: 5px
   .data-con
     padding: 15px
     .data-top
