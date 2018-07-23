@@ -821,7 +821,7 @@
     },
     filters: {
       titleCut(val) {
-        if (val.length > 8) {
+        if (val && val.length > 8) {
           return val.slice(0, 8) + '···'
         } else {
           return val
