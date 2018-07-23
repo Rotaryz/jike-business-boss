@@ -5,9 +5,13 @@ export default {
    * 获得用户详情
    * @returns {*}
    */
-  getClientDetail(id) {
-    let url = `api/employee/employee-customer-flow/${id}`
-    return request.get(url)
+  getClientDetail(user_id = 0, current_type = 'zantui') {
+    let url = `api/merchant/get-user`
+    let data = {
+      user_id,
+      current_type
+    }
+    return request.get(url, data)
   },
   /**
    * 保存客户详情
@@ -56,10 +60,10 @@ export default {
    * 行为记录列表
    * @returns {*}
    */
-  getActionList(customer_id = 0, page = 1, limit = 10) {
+  getActionList(employee_id = 0, page = 1, limit = 10) {
     let url = `api/employee/action-logs`
     let data = {
-      customer_id,
+      employee_id,
       page,
       limit
     }

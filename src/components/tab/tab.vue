@@ -75,6 +75,7 @@
     height: 62px
     background: $color-20202E
     display: flex
+    z-index
     .tab-item
       position: relative
       flex: 1

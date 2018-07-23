@@ -18,12 +18,12 @@
                 <div class="cliten-img">
                   <div class="detail-img-box">
                     <div class="img">
-                      <img :src="clientData.image_url" alt="">
+                      <img :src="clientData.avatar" alt="">
                     </div>
                     <div class="label-right">
                       <div class="label-name">{{clientData.name}}</div>
                       <div class="label-box">
-                        <div class="full-name">{{flow.job}}</div>
+                        <div class="full-name">{{clientData.position}}</div>
                       </div>
                     </div>
                   </div>
@@ -89,7 +89,9 @@
                 <div class="data-number-box">
                   <img class="cliten-con-bg" src="./bg-customer_details@2x.png" alt="">
                   <div class="data-tab">
-                    <div class="tab"   v-for="(item, index) in tabMoreList" v-bind:key="index" :class="tabNumber === index ? 'active' : '' " @click="getAllTab(item, index)">{{item.text}}</div>
+                    <div class="tab" v-for="(item, index) in tabMoreList" v-bind:key="index"
+                         :class="tabNumber === index ? 'active' : '' " @click="getAllTab(item, index)">{{item.text}}
+                    </div>
                   </div>
                   <div class="data-list">
                     <div class="list-box">
@@ -213,7 +215,8 @@
                     <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span
                       class="green">保存</span>了你的<span
                       class="green">电话</span>，可以考虑主动沟通</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10009">{{item.nickname}}<span class="green">保存</span>了你的<span class="green">名片海报</span></p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10009">{{item.nickname}}<span
+                      class="green">保存</span>了你的<span class="green">名片海报</span></p>
                     <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span
                       class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
                     <p class="msgs-p" v-show="item.event_no * 1 === 20002">{{item.nickname}}正在<span
@@ -338,6 +341,7 @@
     },
     created() {
       this.id = this.$route.query.id
+      console.log(this.id)
       this.pageUrl = this.$route.query.pageUrl
       this.getClientId(this.id)
       this.getActionLineData()
@@ -679,12 +683,6 @@
           if (res.error === ERR_OK) {
             console.log(2)
             this.clientData = res.data
-            this.flow = res.data.flow
-            if (this.flow.real_name.length * 1 === 0) {
-              this.clientData.name = this.flow.real_name
-            } else {
-              this.clientData.name = this.flow.nickname
-            }
             this.mobile = res.data.mobile
           }
         })
@@ -697,11 +695,16 @@
         })
       },
       getMoreActionList(id) {
+        if (this.noActionMore) {
+          this.$refs.scroll.forceUpdate()
+          return
+        }
         this.actionPage++
         ClientDetail.getActionList(id, this.actionPage).then((res) => {
           if (res.error === ERR_OK) {
             if (res.data.length * 1 === 0) {
               this.actionPage--
+              this.noActionMore = true
             } else {
               this.actionList.push(...res.data)
             }
@@ -1156,6 +1159,7 @@
 
   .msgs-item:last-child
     margin-bottom: 0
+
   .six-title
     padding: 0 15px 20px 30px
     .six-top
@@ -1163,7 +1167,7 @@
       justify-content: space-between
       height: 45px
       line-height: 45px
-      border-bottom: 0.5px solid rgba(0,0,0,.1)
+      border-bottom: 0.5px solid rgba(0, 0, 0, .1)
       padding-right: 5px
       .left
         font-size: $font-size-16
@@ -1178,7 +1182,7 @@
       justify-content: space-between
       height: 45px
       line-height: 45px
-      border-bottom: 0.5px solid rgba(0,0,0,.1)
+      border-bottom: 0.5px solid rgba(0, 0, 0, .1)
       padding-right: 5px
       .left
         font-size: $font-size-14
