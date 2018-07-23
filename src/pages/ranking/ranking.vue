@@ -116,7 +116,7 @@
       }
     },
     created() {
-      this.$emit('tabChange', 2)
+      // this.$emit('tabChange', 2)
       this._rqGetStaffList()
     },
     methods: {
