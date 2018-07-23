@@ -186,56 +186,59 @@
           <div class="visitor-box" v-if="menuIdx * 1 === 2">
             <div class="box-list" v-if="actionList.length * 1 !== 0">
               <div class="msgs-item" v-for="(item, index) in actionList" :key="index">
-                <img :src="item.image_url" class="msgs-left">
-                <div class="msgs-right">
-                  <div class="msgs-container">
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10000">{{item.nickname}}<span
-                      class="green">查看</span>了<span
-                      class="green">你的名片</span>第{{item.count_sum}}次，看来TA对你感兴趣</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10001">{{item.nickname}}给你<span
-                      class="green">点了</span><span class="green">赞</span>，看来认可你</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10002">{{item.nickname}}<span
-                      class="green">取消</span>给你点的<span
-                      class="green">赞</span></p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10003">{{item.nickname}}<span
-                      class="green">复制</span>了你的<span
-                      class="green">邮箱</span>，请留意邮件</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10004">{{item.nickname}}<span
-                      class="green">浏览</span>了你的<span
-                      class="green">地址</span></p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10005">{{item.nickname}}<span
-                      class="green">转发</span>了你的<span
-                      class="green">名片</span>，你的人脉圈正在裂变</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10006">{{item.nickname}}<span
-                      class="green">保存</span>了你的<span
-                      class="green">名片海报</span>，看来TA对你感兴趣</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10007">{{item.nickname}}<span
-                      class="green">拨打</span>了你的<span
-                      class="green">手机</span>，请记录跟进内容</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span
-                      class="green">保存</span>了你的<span
-                      class="green">电话</span>，可以考虑主动沟通</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10009">{{item.nickname}}<span
-                      class="green">保存</span>了你的<span class="green">名片海报</span></p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span
-                      class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 20002">{{item.nickname}}正在<span
-                      class="green">查看</span><span class="green">{{item.name | titleCut}}</span>，可能对该产品感兴趣</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 20003">{{item.nickname}}正在对<span class="green">{{item.name | titleCut}}</span>向你<span
-                      class="green">咨询</span>，请做好准备应答</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 20004">{{item.nickname}}<span
-                      class="green">转发</span>了<span
-                      class="green">{{item.name | titleCut}}</span>，可能在咨询他人建议</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 30001">{{item.nickname}}正在<span
-                      class="green">查看</span>你发布的<span class="green">动态</span>第{{item.count_sum}}次</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 30002">{{item.nickname}}给你发布的动态<span
-                      class="green">点了</span><span class="green">赞</span></p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 40001">{{item.nickname}}正在<span
-                      class="green">查看</span>你公司的<span class="green">官网</span>第{{item.count_sum}}次</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 50001">{{item.nickname}}正在向你<span
-                      class="green">咨询</span>，请做好准备应答</p>
+                <div class="item-time" v-if="item.is_showtime">{{item.created_at | timeFormat}}</div>
+                <div class="msg-item-content">
+                  <img :src="item.image_url" class="msgs-left">
+                  <div class="msgs-right">
+                    <div class="msgs-container">
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10000">{{item.nickname}}<span
+                        class="green">查看</span>了<span
+                        class="green">你的名片</span>第{{item.count_sum}}次，看来TA对你感兴趣</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10001">{{item.nickname}}给你<span
+                        class="green">点了</span><span class="green">赞</span>，看来认可你</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10002">{{item.nickname}}<span
+                        class="green">取消</span>给你点的<span
+                        class="green">赞</span></p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10003">{{item.nickname}}<span
+                        class="green">复制</span>了你的<span
+                        class="green">邮箱</span>，请留意邮件</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10004">{{item.nickname}}<span
+                        class="green">浏览</span>了你的<span
+                        class="green">地址</span></p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10005">{{item.nickname}}<span
+                        class="green">转发</span>了你的<span
+                        class="green">名片</span>，你的人脉圈正在裂变</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10006">{{item.nickname}}<span
+                        class="green">保存</span>了你的<span
+                        class="green">名片海报</span>，看来TA对你感兴趣</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10007">{{item.nickname}}<span
+                        class="green">拨打</span>了你的<span
+                        class="green">手机</span>，请记录跟进内容</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span
+                        class="green">保存</span>了你的<span
+                        class="green">电话</span>，可以考虑主动沟通</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10009">{{item.nickname}}<span
+                        class="green">保存</span>了你的<span class="green">名片海报</span></p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span
+                        class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 20002">{{item.nickname}}正在<span
+                        class="green">查看</span><span class="green">{{item.name | titleCut}}</span>，可能对该产品感兴趣</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 20003">{{item.nickname}}正在对<span class="green">{{item.name | titleCut}}</span>向你<span
+                        class="green">咨询</span>，请做好准备应答</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 20004">{{item.nickname}}<span
+                        class="green">转发</span>了<span
+                        class="green">{{item.name | titleCut}}</span>，可能在咨询他人建议</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 30001">{{item.nickname}}正在<span
+                        class="green">查看</span>你发布的<span class="green">动态</span>第{{item.count_sum}}次</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 30002">{{item.nickname}}给你发布的动态<span
+                        class="green">点了</span><span class="green">赞</span></p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 40001">{{item.nickname}}正在<span
+                        class="green">查看</span>你公司的<span class="green">官网</span>第{{item.count_sum}}次</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 50001">{{item.nickname}}正在向你<span
+                        class="green">咨询</span>，请做好准备应答</p>
+                    </div>
+                    <!--<img src="./icon-pressed@2x.png" class="msgs-rt">-->
                   </div>
-                  <!--<img src="./icon-pressed@2x.png" class="msgs-rt">-->
                 </div>
               </div>
             </div>
@@ -265,6 +268,7 @@
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
   import Exception from 'components/exception/exception'
+  import utils from 'common/js/utils'
 
   export default {
     name: 'CapacityModel',
@@ -822,6 +826,13 @@
         } else {
           return val
         }
+      },
+      timeFormat(val) {
+        if (val) {
+          let res = utils.radarTimeFormat(val)
+          return res.time
+        }
+        return ''
       }
     },
     watch: {
@@ -1117,21 +1128,27 @@
         padding: 20px
 
   .msgs-item
-    margin-bottom: 15px
-    width: 100%
-    height: 55px
-    background: $color-white
-    border: 0.5px solid rgba(32, 32, 46, 0.10)
-    box-shadow: 0 4px 12px 0 rgba(43, 43, 145, 0.04)
-    border-radius: 2px
-    display: flex
-    justify-content: space-between
-    align-items: center
+    margin-top: 15px
+    .item-time
+      font-family: PingFangSC-Medium
+      font-size: $font-size-14
+      color: #20202E
+      padding: 10px 0 15px
+    .msg-item-content
+      width: 100%
+      height: 55px
+      background: $color-white
+      border: 0.5px solid rgba(32,32,46,0.10)
+      box-shadow: 0 4px 12px 0 rgba(43,43,145,0.04)
+      border-radius: 2px
+      display: flex
+      justify-content: space-between
+      align-items: center
     .msgs-left
       margin: 0 10px
       width: 40px
       height: 40px
-      border: 0.5px solid rgba(32, 32, 46, 0.10)
+      border: 0.5px solid rgba(32,32,46,0.10)
     .msgs-right
       flex: 1
       overflow: hidden
@@ -1148,7 +1165,7 @@
         align-items: center
         .msgs-p
           line-height: 18px
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           font-size: $font-size-medium
           .green
             color: $color-text-56
@@ -1156,7 +1173,6 @@
         width: 7.5px
         height: 11.5px
         margin-left: 33px
-
   .msgs-item:last-child
     margin-bottom: 0
 
