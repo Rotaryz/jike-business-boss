@@ -5,7 +5,7 @@
         <section class="line-wrapper">
           <div class="line"></div>
         </section>
-        <p class="icon-text">{{item.text}}{{index}}</p>
+        <p class="icon-text">{{item.text}}</p>
       </div>
     </router-link>
   </div>
@@ -72,14 +72,14 @@
           display: flex
           justify-content: center
           align-items: center
+          opacity :0
+          transition: all .6s
           .line
-            width: 0px
+            width: 85px
             height: 32px
             background-color: $color-56BA15
             border-radius: 100px
-            transition: all .3s
       &.router-link-active
         .line-wrapper
-          .line
-            width: 85px
+          opacity :1
 </style>
