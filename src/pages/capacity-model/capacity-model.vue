@@ -696,7 +696,7 @@
         })
       },
       getNewActionList(id) {
-        ClientDetail.getActionList(id, this.actionPage).then((res) => {
+        ClientDetail.getActionList(id).then((res) => {
           if (res.error === ERR_OK) {
             this.actionList = res.data
           }
@@ -707,11 +707,12 @@
           this.$refs.scroll.forceUpdate()
           return
         }
-        this.actionPage++
-        ClientDetail.getActionList(id, this.actionPage).then((res) => {
+        // this.actionPage++
+        const number = this.actionList.length
+        ClientDetail.getActionList(id, number).then((res) => {
           if (res.error === ERR_OK) {
             if (res.data.length * 1 === 0) {
-              this.actionPage--
+              // this.actionPage--
               this.noActionMore = true
             } else {
               this.actionList.push(...res.data)
