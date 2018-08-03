@@ -7,6 +7,6 @@ export default {
    */
   Myqrcode (data) {
     let url = 'api/employee/my-new-qrcode'
-    return request.get(url, data)
+    return request.get(url, Object.assign({}, {is_hyaline: 0}, data))
   }
 }
