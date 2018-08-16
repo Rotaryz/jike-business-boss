@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div class="oauth">
+    <img class="loading" src="./loading.gif" alt="" width="20" height="20">
+  </div>
 </template>
 
 <script>
@@ -60,6 +62,15 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="stylus" rel="stylesheet/stylus">
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
 
+  .oauth
+    fill-box()
+    display: flex
+    align-items: center
+    justify-content: center
+    z-index: 100
+    background: $color-white
 </style>
