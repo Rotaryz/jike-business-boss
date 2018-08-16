@@ -3,7 +3,7 @@ import storage from 'storage-controller'
 
 const LOSE_EFFICACY = 10000
 const NET404 = 404
-const DISABLE = 11002
+const DISABLE = 11002 // 11001 AI雷达没有权限, 11002 BOSS雷达没有权限
 const DELETE = 1
 
 export default class utils {
