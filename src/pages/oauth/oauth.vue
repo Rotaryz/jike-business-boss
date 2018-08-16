@@ -43,7 +43,7 @@
         }
       },
       _getCode() {
-        window.location.href = oauth.oauthUri
+        window.location.replace(oauth.oauthUri)
       },
       _applyOauth() {
         Jwt.employeeLogin(this.code).then((res) => {
